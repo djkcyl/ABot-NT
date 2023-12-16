@@ -1,0 +1,13 @@
+data/browser/
+data/logs/
+__pycache__/
+*.bak/
+*_bak/
+.vscode/
+config/
+static/
+
+*.gz
+test.py
+
+func/**/_[^_]*

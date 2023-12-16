@@ -1,0 +1,72 @@
+name: Bug 反馈
+description: 从这里提交错误报告
+title: "[Bug]："
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请先确保你完整阅读了项目的 [部署方法](_docs/deploy.md)，并且成功安装了所需的所有依赖。
+        > 上游错误请不要在此处提交，请自行提交到相应的 Issue。
+
+        如果您在检查了所有的配置等后依然出现错误，请在下方填写错误报告，并且提供以下信息：
+
+  - type: textarea
+    id: issue-description
+    attributes:
+      label: 问题简述
+      description: 在下方详细写出你遇到的问题，以及问题是如何发生的。
+    validations:
+      required: true
+
+  - type: input
+    id: mirai-version
+    attributes:
+      label: Mirai 版本号
+      description: 在此处填写你的 Mirai 版本号。
+    validations:
+      required: true
+
+  - type: input
+    id: mirai-api-http-version
+    attributes:
+      label: Mirai API HTTP 版本号
+      description: 在此处填写你的 Mirai API HTTP 版本号。
+    validations:
+      required: true
+
+  - type: textarea
+    id: mirai-config
+    attributes:
+      label: Mirai 配置
+      description: 请完整复制 Mirai 的配置文件，并且将其粘贴到此处，请自行处理隐私信息。
+      render: YAML
+    validations:
+      required: true
+
+  - type: textarea
+    id: abot-config
+    attributes:
+      label: Abot 配置
+      description: 请完整复制 Abot 的配置文件，并且将其粘贴到此处，请自行处理隐私信息。
+      render: YAML
+    validations:
+      required: true
+
+  - type: textarea
+    id: mirai-log
+    attributes:
+      label: 在此处填写 Mirai 日志
+      description: 请完整复制 Mirai 的控制台日志，并且将其粘贴到此处。
+      render: Text
+    validations:
+      required: true
+
+  - type: textarea
+    id: abot-log
+    attributes:
+      label: 在此处填写 Abot 日志
+      description: 请完整复制 Abot 的控制台日志，并且将其粘贴到此处。
+      render: Text
+    validations:
+      required: true
