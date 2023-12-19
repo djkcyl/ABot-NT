@@ -7,7 +7,7 @@ from pymongo import IndexModel
 
 
 class AUser(Document):
-    uid: int
+    aid: int
     cid: str
     coin: int = 10
     is_sign: bool = False

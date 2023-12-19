@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import cast
+from typing import Literal, cast
 
 from loguru import logger
 
@@ -31,9 +31,9 @@ class FuncItem:
     maintain: bool
 
 
-class AUserModel(AUser):
+class AUserBuilder(AUser):
     @classmethod
-    async def init(cls, user: AUser | str | int):
+    async def init(cls, user: AUser | str | int, create_type: Literal["cid", "aid"] = "cid"):
         if isinstance(user, str | int):
             user_id = str(user)
         elif not isinstance(user, AUser):
@@ -43,18 +43,23 @@ class AUserModel(AUser):
 
         if isinstance(user, AUser):
             return user
-        user_ = await AUser.find_one(AUser.cid == user_id)
+        if create_type == "cid":
+            user_ = await AUser.find_one(AUser.cid == user_id)
+        elif create_type == "aid":
+            user_ = await AUser.find_one(AUser.aid == user_id)
+        else:
+            raise TypeError(f"无法识别的用户类型：{create_type}")
         if user_ is None:
             last_userid = await AUser.find_one(sort=[("_id", -1)])
-            uid = int(last_userid.uid) + 1 if last_userid else 1
-            await AUser.insert(AUser(uid=uid, cid=user_id))
+            uid = int(last_userid.aid) + 1 if last_userid else 1
+            await AUser.insert(AUser(aid=uid, cid=user_id))
             user_ = await AUser.find_one(AUser.cid == user_id)
             logger.info(f"[Core.db] 已初始化用户：{user_id}")
             return cast(AUser, user_)
         return cast(AUser, user_)
 
 
-class AGroupModel(GroupData):
+class AGroupBuilder(GroupData):
     @classmethod
     async def init(cls, group: GroupData | str | int):
         if isinstance(group, str | int):

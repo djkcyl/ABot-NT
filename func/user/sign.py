@@ -3,7 +3,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 from avilla.core import Context, MessageReceived
-from avilla.twilight.twilight import FullMatch, Twilight
+from avilla.twilight.twilight import Twilight, UnionMatch
 from graia.saya import Channel
 from graiax.shortcut import dispatch, listen
 
@@ -18,11 +18,12 @@ channel.meta = build_metadata(
     version="1.0",
     description="用户签到，游戏币唯一的凭空来源",
     usage=["发送指令：签到"],
+    can_be_disabled=False,
 )
 
 
 @listen(MessageReceived)
-@dispatch(Twilight(FullMatch("/签到"), preprocessor=MentionMe()))
+@dispatch(Twilight(UnionMatch("sign", "签到"), preprocessor=MentionMe()))
 async def main(ctx: Context, auser: AUser, group: GroupData):
     if await auser.sign(group.group_id):
         if auser.continue_sign % 30 == 0:

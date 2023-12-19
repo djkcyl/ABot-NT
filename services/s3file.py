@@ -16,22 +16,23 @@ class S3File(Minio):
     async def get_object(self, object_name: str):
         launart = Launart.current()
         session = launart.get_component(AiohttpClientService).session
-        return await super().get_object("abot-7f8befa44d10", object_name, session)
+        return await super().get_object("abot7f8befa44d10", object_name, session)
 
     async def put_object(
         self,
         object_name: str,
         data: bytes | BytesIO,
         content_type: str = "application/octet-stream",
-        o_type: str = None,
+        o_type: str | None = None,
     ):
         if isinstance(data, bytes):
             readble = BytesIO(data)
             legnth = len(data)
-
-        if isinstance(data, BytesIO):
+        elif isinstance(data, BytesIO):
             readble = data
             legnth = data.getbuffer().nbytes
+        else:
+            raise TypeError("data must be bytes or BytesIO")
 
         readble.seek(0)
 
@@ -39,7 +40,7 @@ class S3File(Minio):
         if o_type:
             tags["O_Type"] = o_type
 
-        return await super().put_object("abot-7f8befa44d10", object_name, readble, legnth, content_type, tags=tags)
+        return await super().put_object("abot7f8befa44d10", object_name, readble, legnth, content_type, tags=tags)
 
     async def object_exists(self, object_name):
         try:
@@ -52,15 +53,15 @@ class S3File(Minio):
                 raise e
 
     async def list_objects(self, prefix: str):
-        return await super().list_objects("abot-7f8befa44d10", prefix)
+        return await super().list_objects("abot7f8befa44d10", prefix)
 
     async def get_presigned_url(self, object_name: str, expires_seconds: int = 300):
         return await super().get_presigned_url(
-            "GET", "abot-7f8befa44d10", object_name, timedelta(seconds=expires_seconds)
+            "GET", "abot7f8befa44d10", object_name, timedelta(seconds=expires_seconds)
         )
 
     async def remove_object(self, object_name: str):
-        return await super().remove_object("abot-7f8befa44d10", object_name)
+        return await super().remove_object("abot7f8befa44d10", object_name)
 
 
 class S3FileService(Service):
@@ -85,11 +86,11 @@ class S3FileService(Service):
 
     async def launch(self, _: Launart):
         async with self.stage("preparing"):
-            if await self.s3file.bucket_exists("abot-7f8befa44d10"):
+            if await self.s3file.bucket_exists("abot7f8befa44d10"):
                 logger.info("S3 Bucket 已存在")
             else:
                 logger.info("正在创建 S3 Bucket")
-                await self.s3file.make_bucket("abot-7f8befa44d10")
+                await self.s3file.make_bucket("abot7f8befa44d10")
                 logger.success("S3 Bucket 创建成功")
 
             test_text = secrets.token_hex(16).encode()

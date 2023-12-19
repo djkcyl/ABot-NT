@@ -7,7 +7,7 @@ from graia.scheduler.timers import crontabify
 from loguru import logger
 
 from utils.saya import build_metadata
-from utils.saya.model import AUser, AUserModel, FuncType
+from utils.saya.model import AUser, AUserBuilder, FuncType
 
 channel = Channel.current()
 channel.meta = build_metadata(
@@ -54,7 +54,7 @@ async def ladder_rent_collection():
     user_list = AUser.find_many(AUser.coin >= 1000, sort=[("coin", SortDirection.DESCENDING)])
     total_rent = 0
     async for user in user_list:
-        auser = await AUserModel.init(user)
+        auser = await AUserBuilder.init(user)
         # leadder_rent 算法为超过 1000 的部分，每多 1000 个游戏币加收千分之一
         leadder_rent = math.ceil((user.coin - 1000) / 1000) / 1000
         reduce_coin = math.ceil(user.coin * leadder_rent)

@@ -4,6 +4,8 @@
 
 ![!](https://count.getloli.com/get/@ABot-NT?theme=rule34)
 
+[![wakatime](https://wakatime.com/badge/github/djkcyl/ABot-NT.svg)](https://wakatime.com/badge/github/djkcyl/ABot-NT)
+
 基于全新 NT 技术架构的 [Avilla](https://github.com/GraiaProject/Avilla) QQ 功能性 <del>究极缝合怪</del> 机器人
 
 </div>

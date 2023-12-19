@@ -9,12 +9,12 @@ import dns.resolver
 from loguru import logger
 from PIL import Image as IMG
 
-from utils.message import SelfPicture
+from utils.message.picture import SelfPicture
 
 from .statusping import StatusPing
 
 
-def ping_status(host, port=None):
+def ping_status(host: str, port: int | None = None):
     if port is None:
         with contextlib.suppress(Exception):
             srv_records = dns.resolver.query(f"_minecraft._tcp.{host}", "SRV")
@@ -26,17 +26,17 @@ def ping_status(host, port=None):
     status = status_ping.get_status()
     status_str = json.dumps(status)
     status_str = re.sub(r"\\u00a7.", "", status_str)
-    status = json.loads(status_str)
+    status: dict = json.loads(status_str)
     logger.debug(status)
     return status
 
 
-def get_server_status(say) -> dict:
+def get_server_status(say: str) -> dict:
     host, _, port = say.partition(":")
     return ping_status(host, int(port) if port else None)
 
 
-async def handle_favicon(status, messages):
+async def handle_favicon(status: dict, messages):
     if favicon := status.get("favicon"):
         byte_data = base64.b64decode(f"{favicon[22:-1]}=")
         img = IMG.open(BytesIO(byte_data)).convert("RGB")
@@ -45,7 +45,7 @@ async def handle_favicon(status, messages):
         messages.append(await SelfPicture().from_data(image, "jpeg"))
 
 
-def handle_description(status, messages):
+def handle_description(status: dict, messages):
     desc = status.get("description", {})
     if isinstance(desc, str):
         desc_text = desc.strip()
@@ -60,7 +60,7 @@ def handle_description(status, messages):
     messages.append(f"描述：\n{desc_text}\n")
 
 
-def handle_version(status, messages):
+def handle_version(status: dict, messages):
     version_name = status.get("version", {}).get("name", "")
     if "Requires" in version_name:
         sType = "Vanilla"
@@ -70,11 +70,7 @@ def handle_version(status, messages):
         sType = sType or "Vanilla"
 
     sDevVer = str(status.get("version", {}).get("protocol", ""))
-    sPlayer = (
-        str(status.get("players", {}).get("online", ""))
-        + " / "
-        + str(status.get("players", {}).get("max", ""))
-    )
+    sPlayer = f"{status.get('players', {}).get('online', '')} / {status.get('players', {}).get('max', '')}"
 
     messages.extend(
         (
@@ -86,22 +82,20 @@ def handle_version(status, messages):
     )
 
 
-def handle_online_players(status, messages):
+def handle_online_players(status: dict, messages):
     if players := status.get("players", {}).get("sample", []):
         sOnlinePlayer = " | ".join(player["name"] for player in players)
         messages.append("\n在线玩家：" + sOnlinePlayer)
 
 
-def handle_modinfo(status, messages):
+def handle_modinfo(status: dict, messages):
     modinfo = status.get("modinfo")
     if modinfo and "FML" in modinfo.get("type", ""):
         messages.append("\n模组Api：Forge")
 
 
-def handle_mods(status, messages):
-    if mods := status.get("modinfo", {}).get("modList") or status.get("forgeData", {}).get(
-        "mods"
-    ):
+def handle_mods(status: dict, messages):
+    if mods := status.get("modinfo", {}).get("modList") or status.get("forgeData", {}).get("mods"):
         messages.append("\nMod数：" + str(len(mods)) + " +")
         sMods = [f"{mod['modid']}@{mod['version']}" for mod in mods[:10]]
         if len(mods) > 10:
@@ -109,7 +103,7 @@ def handle_mods(status, messages):
         messages.append("\n".join(sMods))
 
 
-async def get_mcping(say):
+async def get_mcping(say: str):
     try:
         status = await asyncio.to_thread(get_server_status, say)
     except Exception as e:

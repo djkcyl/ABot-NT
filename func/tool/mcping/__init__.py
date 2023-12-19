@@ -40,7 +40,7 @@ channel.meta = build_metadata(
 @dispatch(
     Twilight(
         [
-            FullMatch("/mcping"),
+            FullMatch("mcping"),
             "arg_bind" @ FullMatch("bind", optional=True),
             "arg_address" @ WildcardMatch(optional=True),
         ],
@@ -53,7 +53,7 @@ async def main(
     arg_bind: RegexResult,
     arg_address: RegexResult,
 ):
-    address = str(arg_address.result) if arg_address.result else await get_bind(agroup.group_id)
+    address = str(arg_address.result) if arg_address.result else str(await get_bind(agroup.group_id))
     if arg_bind.result and not arg_address.result and address:
         await delete_bind(agroup.group_id)
         await ctx.scene.send_message(f"服务器 {address} 解绑成功")

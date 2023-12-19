@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform"]
 lock_version = "4.4.1"
-content_hash = "sha256:cdc6895b2cd9bbc6ae925a001f026e4a39ed16e839e5c3e00967f82a6d76c604"
+content_hash = "sha256:8c99085b684085d9e07262022afa71d8238d8aac2d17b9d0cfbf02f73ccaae00"
 
 [[package]]
 name = "aiofile"
@@ -206,7 +206,7 @@ files = [
 
 [[package]]
 name = "avilla-core"
-version = "1.0.0a17"
+version = "1.0.0a18"
 requires_python = ">=3.9"
 summary = ""
 dependencies = [
@@ -217,46 +217,21 @@ dependencies = [
     "loguru>=0.6.0",
 ]
 files = [
-    {file = "avilla_core-1.0.0a17-py3-none-any.whl", hash = "sha256:f30ed5e7cf65e74e38dd7d8e3b50ddee0388e39089a500a8cafd2ac1da53a094"},
-    {file = "avilla_core-1.0.0a17.tar.gz", hash = "sha256:18cb97716e45c191cd474f977b356fc9ee4fd381bcd215637b72d3bad1f4ccd2"},
-]
-
-[[package]]
-name = "avilla-elizabeth"
-version = "1.0.0a16"
-requires_python = ">=3.9"
-summary = ""
-dependencies = [
-    "aiohttp>=3.8.1",
-    "avilla-core>=1.0.0a16",
-    "avilla-standard-qq>=1.0.0a7",
-]
-files = [
-    {file = "avilla_elizabeth-1.0.0a16-py3-none-any.whl", hash = "sha256:0a37ca51bf18da5b3be67faf5011855f9fd839225580a6ec3696a4bf29c13cca"},
-    {file = "avilla_elizabeth-1.0.0a16.tar.gz", hash = "sha256:66ea0bc9a3870b5f8fff16d978e8c522ad92459c71c89c814cb554ea4e3ef47d"},
+    {file = "avilla_core-1.0.0a18-py3-none-any.whl", hash = "sha256:dbfc6f3a66a2615ce3af1d4b82ade268dffc7e888359cef650fa948864324329"},
+    {file = "avilla_core-1.0.0a18.tar.gz", hash = "sha256:f6751f2de7f36a858cbd7ce72ba15657b5c0f6cd203acd5e1555fb23fbaf49fe"},
 ]
 
 [[package]]
 name = "avilla-qqapi"
-version = "1.0.0a21"
+version = "1.0.0a22"
 requires_python = ">=3.9"
 summary = ""
 dependencies = [
     "aiohttp>=3.8.1",
 ]
 files = [
-    {file = "avilla_qqapi-1.0.0a21-py3-none-any.whl", hash = "sha256:e1a0bb2c42a4e96c364eb3697bfb88bacad7c3943c889eb05027784c429e44aa"},
-    {file = "avilla_qqapi-1.0.0a21.tar.gz", hash = "sha256:ae551594da9bcbdd32d00acc3c41acc3a0022d31667c01e4d9a0c28d4738ec16"},
-]
-
-[[package]]
-name = "avilla-standard-qq"
-version = "1.0.0a9"
-requires_python = ">=3.9"
-summary = ""
-files = [
-    {file = "avilla_standard_qq-1.0.0a9-py3-none-any.whl", hash = "sha256:c69937119761c9947cb685be1962d4317b0430d40f63de4d5cad4475d936b88c"},
-    {file = "avilla_standard_qq-1.0.0a9.tar.gz", hash = "sha256:4afbb8e165533cfc021aef8c4f4179aea4b607976a51baa636bbbb407aa61962"},
+    {file = "avilla_qqapi-1.0.0a22-py3-none-any.whl", hash = "sha256:025636ae92a8cb1e61d3ec00996c9208fb9b7e3a6ad96d5072184a777ab98e44"},
+    {file = "avilla_qqapi-1.0.0a22.tar.gz", hash = "sha256:855229b9ee90ed8856d1f15f6a1a7c751cd8b95d075839e69e8aad7865825fa7"},
 ]
 
 [[package]]
@@ -565,6 +540,24 @@ files = [
 ]
 
 [[package]]
+name = "graiax-text2img-playwright"
+version = "0.4.3"
+requires_python = ">=3.9"
+summary = "基于 Playwright 的适用于 Graia 的文转图工具"
+dependencies = [
+    "graiax-playwright<0.4.0,>=0.2.6",
+    "launart>=0.6.4",
+    "markdown-it-py[linkify,plugins]>=3.0.0",
+    "mdit-py-emoji>=0.1.1",
+    "pygments>=2.16.1",
+    "typing-extensions>=4.7.1",
+]
+files = [
+    {file = "graiax_text2img_playwright-0.4.3-py3-none-any.whl", hash = "sha256:194982cb47713728ac644f8c9cda0b1525c9c5f620314e54a3fb789ecce2a76e"},
+    {file = "graiax_text2img_playwright-0.4.3.tar.gz", hash = "sha256:8f40ed136527e402942ae0ce36500e9d37bbc88d7bde4bea4c66aef25b32d2ea"},
+]
+
+[[package]]
 name = "greenlet"
 version = "3.0.1"
 requires_python = ">=3.7"
@@ -675,6 +668,19 @@ files = [
 ]
 
 [[package]]
+name = "jinja2"
+version = "3.1.2"
+requires_python = ">=3.7"
+summary = "A very fast and expressive template engine."
+dependencies = [
+    "MarkupSafe>=2.0",
+]
+files = [
+    {file = "Jinja2-3.1.2-py3-none-any.whl", hash = "sha256:6088930bfe239f0e6710546ab9c19c9ef35e29792895fed6e6e31a023a182a61"},
+    {file = "Jinja2-3.1.2.tar.gz", hash = "sha256:31351a702a408a9e7595a8fc6150fc3f43bb6bf7e319770cbc0db9df9437e852"},
+]
+
+[[package]]
 name = "kayaku"
 version = "0.5.3"
 requires_python = ">=3.8,<4.0"
@@ -744,6 +750,19 @@ files = [
 ]
 
 [[package]]
+name = "linkify-it-py"
+version = "2.0.2"
+requires_python = ">=3.7"
+summary = "Links recognition library with FULL unicode support."
+dependencies = [
+    "uc-micro-py",
+]
+files = [
+    {file = "linkify-it-py-2.0.2.tar.gz", hash = "sha256:19f3060727842c254c808e99d465c80c49d2c7306788140987a1a7a29b0d6ad2"},
+    {file = "linkify_it_py-2.0.2-py3-none-any.whl", hash = "sha256:a3a24428f6c96f27370d7fe61d2ac0be09017be5190d68d8658233171f1b6541"},
+]
+
+[[package]]
 name = "loguru"
 version = "0.6.0"
 requires_python = ">=3.5"
@@ -755,6 +774,90 @@ dependencies = [
 files = [
     {file = "loguru-0.6.0-py3-none-any.whl", hash = "sha256:4e2414d534a2ab57573365b3e6d0234dfb1d84b68b7f3b948e6fb743860a77c3"},
     {file = "loguru-0.6.0.tar.gz", hash = "sha256:066bd06758d0a513e9836fd9c6b5a75bfb3fd36841f4b996bc60b547a309d41c"},
+]
+
+[[package]]
+name = "markdown-it-py"
+version = "3.0.0"
+requires_python = ">=3.8"
+summary = "Python port of markdown-it. Markdown parsing, done right!"
+dependencies = [
+    "mdurl~=0.1",
+]
+files = [
+    {file = "markdown-it-py-3.0.0.tar.gz", hash = "sha256:e3f60a94fa066dc52ec76661e37c851cb232d92f9886b15cb560aaada2df8feb"},
+    {file = "markdown_it_py-3.0.0-py3-none-any.whl", hash = "sha256:355216845c60bd96232cd8d8c40e8f9765cc86f46880e43a8fd22dc1a1a8cab1"},
+]
+
+[[package]]
+name = "markdown-it-py"
+version = "3.0.0"
+extras = ["linkify", "plugins"]
+requires_python = ">=3.8"
+summary = "Python port of markdown-it. Markdown parsing, done right!"
+dependencies = [
+    "linkify-it-py<3,>=1",
+    "markdown-it-py==3.0.0",
+    "mdit-py-plugins",
+]
+files = [
+    {file = "markdown-it-py-3.0.0.tar.gz", hash = "sha256:e3f60a94fa066dc52ec76661e37c851cb232d92f9886b15cb560aaada2df8feb"},
+    {file = "markdown_it_py-3.0.0-py3-none-any.whl", hash = "sha256:355216845c60bd96232cd8d8c40e8f9765cc86f46880e43a8fd22dc1a1a8cab1"},
+]
+
+[[package]]
+name = "markupsafe"
+version = "2.1.3"
+requires_python = ">=3.7"
+summary = "Safely add untrusted strings to HTML/XML markup."
+files = [
+    {file = "MarkupSafe-2.1.3-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:f698de3fd0c4e6972b92290a45bd9b1536bffe8c6759c62471efaa8acb4c37bc"},
+    {file = "MarkupSafe-2.1.3-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:aa57bd9cf8ae831a362185ee444e15a93ecb2e344c8e52e4d721ea3ab6ef1823"},
+    {file = "MarkupSafe-2.1.3-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ffcc3f7c66b5f5b7931a5aa68fc9cecc51e685ef90282f4a82f0f5e9b704ad11"},
+    {file = "MarkupSafe-2.1.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:47d4f1c5f80fc62fdd7777d0d40a2e9dda0a05883ab11374334f6c4de38adffd"},
+    {file = "MarkupSafe-2.1.3-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:1f67c7038d560d92149c060157d623c542173016c4babc0c1913cca0564b9939"},
+    {file = "MarkupSafe-2.1.3-cp312-cp312-musllinux_1_1_aarch64.whl", hash = "sha256:9aad3c1755095ce347e26488214ef77e0485a3c34a50c5a5e2471dff60b9dd9c"},
+    {file = "MarkupSafe-2.1.3-cp312-cp312-musllinux_1_1_i686.whl", hash = "sha256:14ff806850827afd6b07a5f32bd917fb7f45b046ba40c57abdb636674a8b559c"},
+    {file = "MarkupSafe-2.1.3-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:8f9293864fe09b8149f0cc42ce56e3f0e54de883a9de90cd427f191c346eb2e1"},
+    {file = "MarkupSafe-2.1.3-cp312-cp312-win32.whl", hash = "sha256:715d3562f79d540f251b99ebd6d8baa547118974341db04f5ad06d5ea3eb8007"},
+    {file = "MarkupSafe-2.1.3-cp312-cp312-win_amd64.whl", hash = "sha256:1b8dd8c3fd14349433c79fa8abeb573a55fc0fdd769133baac1f5e07abf54aeb"},
+    {file = "MarkupSafe-2.1.3.tar.gz", hash = "sha256:af598ed32d6ae86f1b747b82783958b1a4ab8f617b06fe68795c7f026abbdcad"},
+]
+
+[[package]]
+name = "mdit-py-emoji"
+version = "0.1.1"
+requires_python = ">=3.8"
+summary = "Emoji plugin for markdown-it-py."
+dependencies = [
+    "markdown-it-py<4.0.0,>=1.0.0",
+]
+files = [
+    {file = "mdit-py-emoji-0.1.1.tar.gz", hash = "sha256:1d08f2cfc0c512f879fe905c7a572ca55590ea359951825fc2073967d3b9daef"},
+    {file = "mdit_py_emoji-0.1.1-py3-none-any.whl", hash = "sha256:59f9fef016eeffbabc1ca524d765ce3f5b1aceb4b5320c46cf6ee120a52371b6"},
+]
+
+[[package]]
+name = "mdit-py-plugins"
+version = "0.4.0"
+requires_python = ">=3.8"
+summary = "Collection of plugins for markdown-it-py"
+dependencies = [
+    "markdown-it-py<4.0.0,>=1.0.0",
+]
+files = [
+    {file = "mdit_py_plugins-0.4.0-py3-none-any.whl", hash = "sha256:b51b3bb70691f57f974e257e367107857a93b36f322a9e6d44ca5bf28ec2def9"},
+    {file = "mdit_py_plugins-0.4.0.tar.gz", hash = "sha256:d8ab27e9aed6c38aa716819fedfde15ca275715955f8a185a8e1cf90fb1d2c1b"},
+]
+
+[[package]]
+name = "mdurl"
+version = "0.1.2"
+requires_python = ">=3.7"
+summary = "Markdown URL utilities"
+files = [
+    {file = "mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"},
+    {file = "mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"},
 ]
 
 [[package]]
@@ -1051,6 +1154,16 @@ files = [
 ]
 
 [[package]]
+name = "pygments"
+version = "2.17.2"
+requires_python = ">=3.7"
+summary = "Pygments is a syntax highlighting package written in Python."
+files = [
+    {file = "pygments-2.17.2-py3-none-any.whl", hash = "sha256:b27c2826c47d0f3219f29554824c30c5e8945175d888647acd804ddd04af846c"},
+    {file = "pygments-2.17.2.tar.gz", hash = "sha256:da46cec9fd2de5be3a8a784f434e4c4ab670b4ff54d605c4c2717e9d49c4c367"},
+]
+
+[[package]]
 name = "pymongo"
 version = "4.6.1"
 requires_python = ">=3.7"
@@ -1093,6 +1206,15 @@ files = [
 ]
 
 [[package]]
+name = "pypng"
+version = "0.20220715.0"
+summary = "Pure Python library for saving and loading PNG images"
+files = [
+    {file = "pypng-0.20220715.0-py3-none-any.whl", hash = "sha256:4a43e969b8f5aaafb2a415536c1a8ec7e341cd6a3f957fd5b5f32a4cfeed902c"},
+    {file = "pypng-0.20220715.0.tar.gz", hash = "sha256:739c433ba96f078315de54c0db975aee537cbc3e1d0ae4ed9aab0ca1e427e2c1"},
+]
+
+[[package]]
 name = "python-dateutil"
 version = "2.8.2"
 requires_python = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
@@ -1103,6 +1225,21 @@ dependencies = [
 files = [
     {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
     {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
+]
+
+[[package]]
+name = "qrcode"
+version = "7.4.2"
+requires_python = ">=3.7"
+summary = "QR Code image generator"
+dependencies = [
+    "colorama; platform_system == \"Windows\"",
+    "pypng",
+    "typing-extensions",
+]
+files = [
+    {file = "qrcode-7.4.2-py3-none-any.whl", hash = "sha256:581dca7a029bcb2deef5d01068e39093e80ef00b4a61098a2182eac59d01643a"},
+    {file = "qrcode-7.4.2.tar.gz", hash = "sha256:9dd969454827e127dbd93696b20747239e6d540e082937c90f14ac95b30f5845"},
 ]
 
 [[package]]
@@ -1155,6 +1292,20 @@ files = [
     {file = "regex-2023.10.3-cp312-cp312-win32.whl", hash = "sha256:ad08a69728ff3c79866d729b095872afe1e0557251da4abb2c5faff15a91d19a"},
     {file = "regex-2023.10.3-cp312-cp312-win_amd64.whl", hash = "sha256:39cdf8d141d6d44e8d5a12a8569d5a227f645c87df4f92179bd06e2e2705e76b"},
     {file = "regex-2023.10.3.tar.gz", hash = "sha256:3fef4f844d2290ee0ba57addcec17eec9e3df73f10a2748485dfd6a3a188cc0f"},
+]
+
+[[package]]
+name = "rich"
+version = "13.7.0"
+requires_python = ">=3.7.0"
+summary = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
+dependencies = [
+    "markdown-it-py>=2.2.0",
+    "pygments<3.0.0,>=2.13.0",
+]
+files = [
+    {file = "rich-13.7.0-py3-none-any.whl", hash = "sha256:6da14c108c4866ee9520bbffa71f6fe3962e193b7da68720583850cd4548e235"},
+    {file = "rich-13.7.0.tar.gz", hash = "sha256:5cb5123b5cf9ee70584244246816e9114227e0b98ad9176eede6ad54bf5403fa"},
 ]
 
 [[package]]
@@ -1271,6 +1422,16 @@ summary = "Backported and Experimental Type Hints for Python 3.8+"
 files = [
     {file = "typing_extensions-4.9.0-py3-none-any.whl", hash = "sha256:af72aea155e91adfc61c3ae9e0e342dbc0cba726d6cba4b6c72c1f34e47291cd"},
     {file = "typing_extensions-4.9.0.tar.gz", hash = "sha256:23478f88c37f27d76ac8aee6c905017a143b0b1b886c3c9f66bc2fd94f9f5783"},
+]
+
+[[package]]
+name = "uc-micro-py"
+version = "1.0.2"
+requires_python = ">=3.7"
+summary = "Micro subset of unicode data files for linkify-it-py projects."
+files = [
+    {file = "uc-micro-py-1.0.2.tar.gz", hash = "sha256:30ae2ac9c49f39ac6dce743bd187fcd2b574b16ca095fa74cd9396795c954c54"},
+    {file = "uc_micro_py-1.0.2-py3-none-any.whl", hash = "sha256:8c9110c309db9d9e87302e2f4ad2c3152770930d88ab385cd544e7a7e75f3de0"},
 ]
 
 [[package]]

@@ -1,3 +1,4 @@
+import os
 import pkgutil
 from asyncio import AbstractEventLoop
 from pathlib import Path
@@ -12,16 +13,17 @@ from graia.broadcast import Broadcast
 from graia.saya import Saya
 from graia.scheduler import GraiaScheduler
 from graia.scheduler.service import SchedulerService
-
-# from graiax.playwright.service import PlaywrightService
+from graiax.playwright.service import PlaywrightService
 from launart import Launart
 
 from utils.logger_patcher import patch as patch_logger
 
-# ruff: noqa: E402
 # import 需要 kayaku 的包前需要先初始化 kayaku
 kayaku.initialize({"{**}": "./config/{**}"})
+os.environ["PLAYWRIGHT_BROWSERS_PATH"] = Path(__file__).parent.joinpath("static", "browser").as_posix()
 
+
+# ruff: noqa: E402
 from services import AiohttpClientService, MongoDBService, S3FileService
 from utils.config import BasicConfig
 from utils.saya.dispachers import ABotDispatcher
@@ -51,7 +53,7 @@ launart.add_component(MongoDBService(config.database_uri))
 launart.add_component(
     S3FileService(config.s3file.endpoint, config.s3file.access_key, config.s3file.secret_key, config.s3file.secure)
 )
-# launart.add_component(PlaywrightService())
+launart.add_component(PlaywrightService())
 launart.add_component(AlconnaGraiaService(AlconnaAvillaAdapter, enable_cache=False, global_remove_tome=True))
 
 avilla = Avilla(broadcast=bcc, launch_manager=launart, record_send=config.logChat)
