@@ -31,5 +31,5 @@ class MentionMe(ChainDecorator):
         if isinstance(first, Notice) and first.target.last_value == ctx.self.last_value:
             mc = MessageChain(chain.content[1:])
             if mc.has(Text):
-                return mc.removeprefix(" ").removesuffix("/")
+                return mc.removeprefix(" ").removeprefix("/").removesuffix(" ")
         return chain

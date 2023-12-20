@@ -53,15 +53,25 @@ async def main(
     arg_bind: RegexResult,
     arg_address: RegexResult,
 ):
-    address = str(arg_address.result) if arg_address.result else str(await get_bind(agroup.group_id))
-    if arg_bind.result and not arg_address.result and address:
-        await delete_bind(agroup.group_id)
-        await ctx.scene.send_message(f"服务器 {address} 解绑成功")
-    elif arg_bind.result and not arg_address.result or not arg_bind.result and not address:
-        await ctx.scene.send_message("本群未绑定服务器")
-    elif arg_bind.result:
-        await set_bind(agroup.group_id, address)
-        await ctx.scene.send_message(f"服务器 {address} 绑定成功")
+    address = str(arg_address.result) if arg_address.result else await get_bind(agroup.group_id)
+
+    if arg_bind.result:
+        if address:
+            # 请求绑定且提供了新的地址
+            await set_bind(agroup.group_id, address)
+            await ctx.scene.send_message(f"服务器 {address} 绑定成功")
+        else:
+            # 请求绑定但没有提供新的地址，执行解绑操作
+            if await get_bind(agroup.group_id):
+                await delete_bind(agroup.group_id)
+                await ctx.scene.send_message("服务器解绑成功")
+            else:
+                await ctx.scene.send_message("本群未绑定服务器，且未提供新的地址，无法解绑或绑定服务器")
     else:
-        ping_result = await get_mcping(address)
-        await ctx.scene.send_message(ping_result)
+        if address:
+            # 没有绑定请求但存在已绑定地址，执行 ping 操作
+            ping_result = await get_mcping(address)
+            await ctx.scene.send_message(ping_result)
+        else:
+            # 没有绑定请求也没有地址，发送未绑定信息
+            await ctx.scene.send_message("本群未绑定服务器，或未指定服务器地址")

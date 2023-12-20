@@ -13,8 +13,9 @@ class ServerBind(Document):
 
 
 async def get_bind(group: str | int):
-    return await ServerBind.find_one(ServerBind.group_id == str(group))
-
+    bind =  await ServerBind.find_one(ServerBind.group_id == str(group))
+    if bind:
+        return bind.address
 
 async def set_bind(group: str | int, address: str):
     await ServerBind.find_one(ServerBind.group_id == str(group)).upsert(
