@@ -10,4 +10,4 @@ static/
 *.gz
 test.py
 
-func/**/_[^_]*
+func/**/_*

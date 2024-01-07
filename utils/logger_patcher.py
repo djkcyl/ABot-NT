@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 
 
 class LoguruHandler(logging.Handler):
-    def emit(self, record):
+    def emit(self, record) -> None:
         # Get corresponding Loguru level if it exists.
         try:
             level = logger.level(record.levelname).name
@@ -49,7 +49,7 @@ def loguru_exc_callback(cls: type[BaseException], val: BaseException, tb: Traceb
         logger.opt(exception=(cls, val, tb)).error("Exception:")
 
 
-def loguru_exc_callback_async(loop, context: dict):
+def loguru_exc_callback_async(loop, context: dict) -> None:
     """loguru 异步异常回调
 
     Args:
@@ -94,8 +94,8 @@ def loguru_exc_callback_async(loop, context: dict):
     logger.opt(exception=exc_info).error("\n".join(log_lines))
 
 
-def patch(loop: "AbstractEventLoop", level: str = "INFO"):
-    """用这种方法重定向 logging 的 Logger 到 loguru 会丢失部分日志（未解决）"""
+def patch(loop: "AbstractEventLoop", level: str = "INFO") -> None:
+    """用这种方法重定向 logging 的 Logger 到 loguru 会丢失部分日志 (未解决)"""
     logging.basicConfig(handlers=[loguru_handler], level=0, force=True)
 
     for name in logging.root.manager.loggerDict:
@@ -107,7 +107,7 @@ def patch(loop: "AbstractEventLoop", level: str = "INFO"):
     logger.remove()
     logger.add(sys.stderr, level=level, enqueue=True)
 
-    # 下面两行有 bug，可能会在输出错误时报错，可能会丢掉部分错误
-    # sys.excepthook = loguru_exc_callback
+    sys.excepthook = loguru_exc_callback
+    # 下面两行有 bug, 在协程里抛出错误不会输出日志, 待修复
     # traceback.print_exception = loguru_exc_callback
     loop.set_exception_handler(loguru_exc_callback_async)

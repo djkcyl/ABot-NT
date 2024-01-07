@@ -8,9 +8,10 @@ from avilla.twilight.twilight import (
 from graia.saya import Channel
 from graiax.shortcut import dispatch, listen
 
+from models.saya import FuncType
+from utils.db import GroupData
 from utils.message.preprocessor import MentionMe
 from utils.saya import build_metadata
-from utils.saya.model import FuncType, GroupData
 
 from .crud import delete_bind, get_bind, set_bind
 from .mcping import get_mcping
@@ -53,13 +54,13 @@ async def main(
     arg_bind: RegexResult,
     arg_address: RegexResult,
 ):
-    address = str(arg_address.result) if arg_address.result else await get_bind(agroup.group_id)
+    
 
     if arg_bind.result:
-        if address:
+        if str(arg_address.result):
             # 请求绑定且提供了新的地址
-            await set_bind(agroup.group_id, address)
-            await ctx.scene.send_message(f"服务器 {address} 绑定成功")
+            await set_bind(agroup.group_id, str(arg_address.result))
+            await ctx.scene.send_message("服务器绑定成功")
         else:
             # 请求绑定但没有提供新的地址，执行解绑操作
             if await get_bind(agroup.group_id):
@@ -68,8 +69,10 @@ async def main(
             else:
                 await ctx.scene.send_message("本群未绑定服务器，且未提供新的地址，无法解绑或绑定服务器")
     else:
+        address = str(arg_address.result) if arg_address.result else await get_bind(agroup.group_id)
         if address:
             # 没有绑定请求但存在已绑定地址，执行 ping 操作
+            await ctx.scene.send_message("正在查询服务器状态，请稍后...")
             ping_result = await get_mcping(address)
             await ctx.scene.send_message(ping_result)
         else:

@@ -3,23 +3,22 @@ import string
 import unicodedata
 
 
-def numf(num: int):
+def numf(num: int) -> str:
     if num < 10000:
         return str(num)
-    elif num < 100000000:
+    if num < 100000000:
         return ("%.2f" % (num / 10000)) + "万"
-    else:
-        return ("%.2f" % (num / 100000000)) + "亿"
+    return ("%.2f" % (num / 100000000)) + "亿"
 
 
-def get_cut_str(str, cut):
+def get_cut_str(input_str: str, cut: int) -> list[str]:
     """
-    自动断行，用于 Pillow 等不会自动换行的场景
+    自动断行, 用于 Pillow 等不会自动换行的场景
     """
-    punc = """，,、。.？?）》】“"‘'；;：:！!·`~%^& """
+    punc = """，,、。.？?）》】“"‘'；;：:！!·`~%^& """  # noqa: RUF001
     si = 0
     i = 0
-    next_str = str
+    next_str = input_str
     str_list = []
 
     while re.search(r"\n\n\n\n\n", next_str):
@@ -27,9 +26,9 @@ def get_cut_str(str, cut):
     for s in next_str:
         si += 1 if s in string.printable else 2
         i += 1
-        if next_str == "":
+        if not next_str:
             break
-        elif next_str[0] == "\n":
+        if next_str[0] == "\n":
             next_str = next_str[1:]
         elif s == "\n":
             str_list.append(next_str[: i - 1])
@@ -52,33 +51,17 @@ def get_cut_str(str, cut):
     i = 0
     non_wrap_str = []
     for p in str_list:
-        if p == "":
+        if not p:
             break
-        elif p[-1] == "\n":
-            p = p[:-1]
+        if p[-1] == "\n":
+            p = p[:-1]  # noqa: PLW2901
         non_wrap_str.append(p)
         i += 1
     return non_wrap_str
 
 
-def getCutStr(str, cut):
-    si = 0
-    i = 0
-    cutStr = ""
-    for s in str:
-        si += 2 if "\u4e00" <= s <= "\u9fff" else 1
-        i += 1
-        if si > cut:
-            cutStr = f"{str[:i]}...."
-            break
-        else:
-            cutStr = str
-
-    return cutStr
-
-
-def get_str_width(str):
+def get_str_width(input_str: str) -> int:
     """
-    获取字符串的宽度，中文字符算两个字符，全角标点也算两个字符
+    获取字符串的宽度, 中文字符算两个字符, 全角标点也算两个字符
     """
-    return sum(2 if unicodedata.east_asian_width(s) in ["F", "W"] else 1 for s in str)
+    return sum(2 if unicodedata.east_asian_width(s) in {"F", "W"} else 1 for s in input_str)

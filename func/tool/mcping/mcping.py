@@ -6,15 +6,16 @@ import re
 from io import BytesIO
 
 import dns.resolver
+from avilla.core import Picture
 from loguru import logger
-from PIL import Image as IMG
+from PIL import Image
 
 from utils.message.picture import SelfPicture
 
 from .statusping import StatusPing
 
 
-def ping_status(host: str, port: int | None = None):
+def ping_status(host: str, port: int | None = None) -> dict:
     if port is None:
         with contextlib.suppress(Exception):
             srv_records = dns.resolver.query(f"_minecraft._tcp.{host}", "SRV")
@@ -36,16 +37,16 @@ def get_server_status(say: str) -> dict:
     return ping_status(host, int(port) if port else None)
 
 
-async def handle_favicon(status: dict, messages):
+async def handle_favicon(status: dict, messages: list[str | Picture]) -> None:
     if favicon := status.get("favicon"):
         byte_data = base64.b64decode(f"{favicon[22:-1]}=")
-        img = IMG.open(BytesIO(byte_data)).convert("RGB")
+        img = Image.open(BytesIO(byte_data)).convert("RGB")
         image = BytesIO()
         img.save(image, format="JPEG", quality=90)
         messages.append(await SelfPicture().from_data(image, "jpeg"))
 
 
-def handle_description(status: dict, messages):
+def handle_description(status: dict, messages: list[str | Picture]) -> None:
     desc = status.get("description", {})
     if isinstance(desc, str):
         desc_text = desc.strip()
@@ -60,57 +61,56 @@ def handle_description(status: dict, messages):
     messages.append(f"描述：\n{desc_text}\n")
 
 
-def handle_version(status: dict, messages):
+def handle_version(status: dict, messages: list[str | Picture]) -> None:
     version_name = status.get("version", {}).get("name", "")
     if "Requires" in version_name:
-        sType = "Vanilla"
-        sVer = version_name
+        s_type = "Vanilla"
+        s_ver = version_name
     else:
-        sType, _, sVer = version_name.rpartition(" ")
-        sType = sType or "Vanilla"
+        s_type, _, s_ver = version_name.rpartition(" ")
+        s_type = s_type or "Vanilla（或未知）"
 
-    sDevVer = str(status.get("version", {}).get("protocol", ""))
-    sPlayer = f"{status.get('players', {}).get('online', '')} / {status.get('players', {}).get('max', '')}"
+    s_dev_ver = str(status.get("version", {}).get("protocol", ""))
+    s_player = f"{status.get('players', {}).get('online', '')} / {status.get('players', {}).get('max', '')}"
 
     messages.extend(
         (
-            f"游戏版本：{sVer}\n",
-            f"协议版本：{sDevVer}\n",
-            f"服务端：{sType}\n",
-            f"玩家数：{sPlayer}",
+            f"游戏版本：{s_ver}\n",
+            f"协议版本：{s_dev_ver}\n",
+            f"服务端：{s_type}\n",
+            f"玩家数：{s_player}",
         )
     )
 
 
-def handle_online_players(status: dict, messages):
+def handle_online_players(status: dict, messages: list[str | Picture]) -> None:
     if players := status.get("players", {}).get("sample", []):
-        sOnlinePlayer = " | ".join(player["name"] for player in players)
-        messages.append("\n在线玩家：" + sOnlinePlayer)
+        s_online_player = " | ".join(player["name"] for player in players)
+        messages.append("\n在线玩家：" + s_online_player)
 
 
-def handle_modinfo(status: dict, messages):
+def handle_modinfo(status: dict, messages: list[str | Picture]) -> None:
     modinfo = status.get("modinfo")
     if modinfo and "FML" in modinfo.get("type", ""):
         messages.append("\n模组Api：Forge")
 
 
-def handle_mods(status: dict, messages):
+def handle_mods(status: dict, messages: list[str | Picture]) -> None:
     if mods := status.get("modinfo", {}).get("modList") or status.get("forgeData", {}).get("mods"):
         messages.append("\nMod数：" + str(len(mods)) + " +")
-        sMods = [f"{mod['modid']}@{mod['version']}" for mod in mods[:10]]
+        s_mods = [f"{mod['modid']}@{mod['version']}" for mod in mods[:10]]
         if len(mods) > 10:
-            sMods.append("......（仅显示前 10 个 mod）")
-        messages.append("\n".join(sMods))
+            s_mods.append("......（仅显示前 10 个 mod）")
+        messages.append("\n".join(s_mods))
 
 
-async def get_mcping(say: str):
+async def get_mcping(say: str) -> list[str | Picture]:
     try:
         status = await asyncio.to_thread(get_server_status, say)
     except Exception as e:
-        logger.exception(e)
-        return [f"服务器信息获取失败\n{e}"]
+        return [f"服务器信息获取失败\n{type(e)}: {e}"]
 
-    messages = [f"延迟：{status.get('ping', '')}ms\n"]
+    messages: list[str | Picture] = [f"延迟：{status.get('ping', '')}ms\n"]
 
     await handle_favicon(status, messages)
     handle_description(status, messages)

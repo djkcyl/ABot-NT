@@ -1,3 +1,5 @@
+#!/usr/bin/env python3.12
+
 import os
 import pkgutil
 from asyncio import AbstractEventLoop
@@ -18,10 +20,9 @@ from launart import Launart
 
 from utils.logger_patcher import patch as patch_logger
 
-# import 需要 kayaku 的包前需要先初始化 kayaku
+# 在 import 需要 kayaku 的包前需要先初始化 kayaku
 kayaku.initialize({"{**}": "./config/{**}"})
 os.environ["PLAYWRIGHT_BROWSERS_PATH"] = Path(__file__).parent.joinpath("static", "browser").as_posix()
-
 
 # ruff: noqa: E402
 from services import AiohttpClientService, MongoDBService, S3FileService
@@ -35,11 +36,11 @@ launart = it(Launart)
 it(AlconnaBehaviour)
 
 with saya.module_context():
-    for dir in Path("func").iterdir():
-        for module in pkgutil.iter_modules([str(dir)]):
+    for module_dir in Path("func").iterdir():
+        for module in pkgutil.iter_modules([str(module_dir)]):
             if module.name.startswith("_"):
                 continue
-            saya.require(f"{dir.parent}.{dir.name}.{module.name}")
+            saya.require(f"{module_dir.parent}.{module_dir.name}.{module.name}")
 
 # import 完各种包之后在启动 kayaku
 kayaku.bootstrap()
@@ -51,12 +52,14 @@ launart.add_component(SchedulerService(it(GraiaScheduler)))
 launart.add_component(AiohttpClientService())
 launart.add_component(MongoDBService(config.database_uri))
 launart.add_component(
-    S3FileService(config.s3file.endpoint, config.s3file.access_key, config.s3file.secret_key, config.s3file.secure)
+    S3FileService(
+        config.s3file.endpoint, config.s3file.access_key, config.s3file.secret_key, secure=config.s3file.secure
+    )
 )
 launart.add_component(PlaywrightService())
 launart.add_component(AlconnaGraiaService(AlconnaAvillaAdapter, enable_cache=False, global_remove_tome=True))
 
-avilla = Avilla(broadcast=bcc, launch_manager=launart, record_send=config.logChat)
+avilla = Avilla(broadcast=bcc, launch_manager=launart, record_send=config.log_chat)
 
 if config.protocol.QQAPI.enabled:
     avilla.apply_protocols(
@@ -72,12 +75,12 @@ if config.protocol.QQAPI.enabled:
         )
     )
 
-# 用这种方法重定向 logging 的 Logger 到 loguru 会丢失部分日志（未解决）
+# 用这种方法重定向 logging 的 Logger 到 loguru 会丢失部分日志 (未解决)
 patch_logger(loop, level="DEBUG" if config.debug else "INFO")
 del config
 bcc.prelude_dispatchers.append(ABotDispatcher)
 avilla.launch()
 
-# 可选的：退出时保存所有配置
-# （会导致运行时手动更改的配置文件会被还原）
+# 可选的: 退出时保存所有配置
+# (会导致运行时手动更改的配置文件会被还原)
 kayaku.save_all()

@@ -32,46 +32,46 @@ font_mime_map = {
 font_path.mkdir(parents=True, exist_ok=True)
 
 
-async def fill_font(route: Route, request: Request):
+async def fill_font(route: Route, request: Request) -> None:
     url = URL(request.url)
     if not url.is_absolute():
-        raise ValueError("字体地址不合法")
+        msg = "字体地址不合法"
+        raise ValueError(msg)
     try:
         logger.debug(f"Font {url.name} requested")
         await route.fulfill(
             path=await get_font(url.name),
             content_type=font_mime_map.get(url.suffix),
         )
-        return
     except Exception:
         logger.error(f"找不到字体 {url.name}")
         await route.fallback()
 
 
-async def get_font(font: str = DEFUALT_DYNAMIC_FONT):
+async def get_font(font: str = DEFUALT_DYNAMIC_FONT) -> Path:
     logger.debug(f"font: {font}")
     url = URL(font)
     if url.is_absolute():
         if font_path.joinpath(url.name).exists():
             logger.debug(f"Font {url.name} found in local")
             return font_path.joinpath(url.name)
-        else:
-            logger.warning(f"字体 {font} 不存在，尝试从网络获取")
-            launart = Launart.current()
-            session = launart.get_component(AiohttpClientService).session
-            resp = await session.get(font)
-            if resp.status != 200:
-                raise ConnectionError(f"字体 {font} 获取失败")
-            font_path.joinpath(url.name).write_bytes(await resp.read())
-            return font_path.joinpath(url.name)
-    else:
-        if not font_path.joinpath(font).exists():
-            raise FileNotFoundError(f"字体 {font} 不存在")
-        logger.debug(f"Font {font} found in local")
-        return font_path.joinpath(font)
+        logger.warning(f"字体 {font} 不存在, 尝试从网络获取")
+        launart = Launart.current()
+        session = launart.get_component(AiohttpClientService).session
+        resp = await session.get(font)
+        if resp.status != 200:
+            msg = f"字体 {font} 获取失败"
+            raise ConnectionError(msg)
+        font_path.joinpath(url.name).write_bytes(await resp.read())
+        return font_path.joinpath(url.name)
+    if not font_path.joinpath(font).exists():
+        msg = f"字体 {font} 不存在"
+        raise FileNotFoundError(msg)
+    logger.debug(f"Font {font} found in local")
+    return font_path.joinpath(font)
 
 
-def get_font_sync(font: str = DEFUALT_DYNAMIC_FONT):
+def get_font_sync(font: str = DEFUALT_DYNAMIC_FONT) -> Path:
     return asyncio.run(get_font(font))
 
 
@@ -120,4 +120,4 @@ def get_font_sync(font: str = DEFUALT_DYNAMIC_FONT):
 
 #         lock_file.write_text(font_url)
 #     else:
-#         logger.info("字体文件已存在，跳过下载")
+#         logger.info("字体文件已存在, 跳过下载")

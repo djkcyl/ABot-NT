@@ -14,7 +14,7 @@ class QQAPIConfig:
     """Token (机器人令牌)"""
     secret: str = "undefined"
     """AppSecret (机器人密钥)"""
-    shard: Optional[tuple[int, int]] = None
+    shard: Optional[tuple[int, int]] = None  # noqa: UP007
     intent: Intents = field(default_factory=Intents)
     is_sandbox: bool = False
     """是否是沙箱环境"""
@@ -33,9 +33,16 @@ class S3FileConfig:
     secure: bool = True
 
 
+@dataclass
+class TencentCloud:
+    secret_id: str = ""
+    secret_key: str = ""
+    text_biztype: str = ""
+    image_biztype: str = ""
+
 @config("main")
 class BasicConfig:
-    logChat: bool = True
+    log_chat: bool = True
     """是否将聊天信息打印在日志中"""
     debug: bool = False
     """是否启用调试模式"""
@@ -43,3 +50,6 @@ class BasicConfig:
     database_uri: str = "mongodb://localhost:27017"
     """MongoDB数据库uri"""
     s3file: S3FileConfig = field(default_factory=S3FileConfig)
+    """S3文件存储配置"""
+    tencent_cloud: TencentCloud = field(default_factory=TencentCloud)
+    """腾讯云配置"""

@@ -1,4 +1,4 @@
-from .model import FuncType
+from models.saya import FuncType
 
 
 def build_metadata(
@@ -6,18 +6,21 @@ def build_metadata(
     name: str,
     version: str,
     description: str,
+    cmd_prefix: str | None = None,
     usage: list[str] | None = None,
     options: list[dict[str, str]] | None = None,
     example: list[dict[str, str]] | None = None,
+    tips: list[str] | None = None,
+    *,
     can_be_disabled: bool = True,
     default_enable: bool = True,
     hidden: bool = False,
     maintain: bool = False,
-):
-    if usage is None:
-        usage = []
-    else:
-        usage = [s.replace("<", "&lt;").replace(">", "&gt;") for s in usage]
+) -> dict[str, str | list[dict[str, str]] | list[str] | bool]:
+
+    cmd_prefix = "" if cmd_prefix is None else cmd_prefix
+    usage = [] if usage is None else [s.replace("<", "&lt;").replace(">", "&gt;") for s in usage]
+    tips = [] if tips is None else [s.replace("<", "&lt;").replace(">", "&gt;") for s in tips]
     if options is None:
         options = []
     else:
@@ -31,9 +34,11 @@ def build_metadata(
         "name": name,
         "version": version,
         "description": description,
+        "cmd_prefix": cmd_prefix,
         "usage": usage,
         "options": options,
         "example": example,
+        "tips": tips,
         "can_be_disabled": can_be_disabled,
         "default_enable": default_enable,
         "hidden": hidden,

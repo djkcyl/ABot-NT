@@ -2,75 +2,141 @@
 name = "ABot-Graia"
 version = "3.0.0.dev1"
 description = ""
-authors = [
-    {name = "djkcyl", email = "cyl@cyllive.cn"},
-]
+authors = [{ name = "djkcyl", email = "cyl@cyllive.cn" }]
 dependencies = [
     "arclet-alconna-avilla>=0.17.1",
-    "avilla-core>=1.0.0a18",
-    "avilla-qqapi>=1.0.0a22",
-    "avilla-twilight>=0.2.0",
-    "beanie>=1.23.6",
+    "avilla-core>=1.0.0a20",
+    "avilla-qqapi>=1.0.0a24",
+    "avilla-twilight>=0.3.1",
+    "beanie>=1.24.0",
     "creart>=0.3.0",
     "dnspython>=2.4.2",
     "graia-amnesia>=0.8.2",
     "graia-broadcast>=0.23.4",
     "graia-saya>=0.0.19",
     "graia-scheduler>=0.3.1",
-    "graiax-playwright>=0.3.1",
+    "graiax-playwright>=0.4.1",
     "graiax-shortcut>=0.1.0",
-    "kayaku>=0.5.3",
+    "kayaku>=0.5.4",
     "launart>=0.8.2",
     "motor>=3.3.2",
-    "miniopy-async>=1.17",
-    "httpx>=0.25.2",
-    "pillow>=10.1.0",
-    "graiax-text2img-playwright>=0.4.3",
+    "miniopy-async>=1.18",
+    "httpx>=0.26.0",
+    "pillow>=10.2.0",
+    "graiax-text2img-playwright>=0.5.0",
     "jinja2>=3.1.2",
     "rich>=13.7.0",
     "qrcode>=7.4.2",
+    "numpy>=1.26.3",
+    "pyzbar>=0.1.9",
+    "nh3>=0.2.15",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 readme = "README.md"
-license = {text = "AGPL-3.0-only"}
+license = { text = "AGPL-3.0-only" }
 
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
 [tool.pdm.dev-dependencies]
-dev = [
-    "black>=23.12.0",
-    "isort>=5.13.2",
-    "ruff>=0.1.8",
-]
+dev = ["black>=23.12.1", "isort>=5.13.2", "ruff>=0.1.11"]
+
+[tool.pdm.scripts]
+abot = "main.py"
 
 [tool.black]
 line-length = 120
-target-version = ["py310"]
+target-version = ["py312"]
 
 [tool.isort]
 profile = "black"
 
 [tool.ruff]
 line-length = 120
-target-version = "py310"
+target-version = "py312"
 select = [
     # https://beta.ruff.rs/docs/rules
-    "E",  # pycodestyle
-    "F",  # pyflakes
-    "UP", # pyupgrade
-    "I",  # isort
-    # "D",  # pydocstyle
-    "ASYNC", # flake8-async
+    'A',     # flake8-builtins
+    'ANN',   # flake8-annotations
+    'ASYNC', # flake8-async
+    'B',     # flake8-bugbear
+    # 'BLE',   # flake8-blind-except
+    'C4',  # flake8-comprehensions
+    'C90', # mccabe
+    # 'CPY', # flake8-copyright
+    'COM', # flake8-commas
+    # 'D',     # pydocstyle
+    'DJ',  # flake8-django
+    'DTZ', # flake8-datetimez
+    'E',   # pycodestyle
+    'EM',  # flake8-errmsg
+    # 'ERA',  # eradicate
+    'EXE',  # flake8-executable
+    'FA',   # flake8-future-annotations
+    'FBT',  # flake8-boolean-trap
+    'FIX',  # flake8-fixme
+    'FLY',  # flynt
+    'FURB', # refurb
+    'G',    # flake8-logging-format
+    'I',    # isort
+    'ICN',  # flake8-import-conventions
+    # 'INP',  # flake8-no-pep420
+    'INT',  # flake8-gettext
+    'ISC',  # flake8-implicit-str-concat
+    # 'LOG',  # flake8-logging
+    'N',    # pep8-naming
+    'NPY',  # NumPy-specific rules
+    'PD',   # pandas-vet
+    'PERF', # Perflint
+    'PGH',  # pygrep-hooks
+    'PIE',  # flake8-pie
+    'PL',   # Pylint
+    'PTH',  # flake8-use-pathlib
+    'PT',   # flake8-pytest-style
+    'PYI',  # flake8-pyi
+    'Q',    # flake8-quotes
+    'RET',  # flake8-return
+    'RSE',  # flake8-raise
+    'RUF',  # Ruff-specific rules
+    'S',    # flake8-bandit
+    'SIM',  # flake8-simplify
+    'SLF',  # flake8-self
+    'SLOT', # flake8-slots
+    'T10',  # flake8-debugger
+    'T20',  # flake8-print
+    'TCH',  # flake8-type-checking
+    'TD',   # flake8-todos
+    'TID',  # flake8-tidy-imports
+    'TRIO', # flake8-trio
+    'TRY',  # tryceratops
+    'UP',   # pyupgrade
+    'W',    # pycodestyle warnings
+    'YTT',  # flake8-2020
 ]
-exclude = [
-    ".git",
-    ".venv",
-    "__pypackages__",
-    "dist",
+exclude = [".git", ".venv", "__pypackages__", "dist", "utils/logger_patcher.py"]
+ignore = [
+    "F401",
+    'E501',
+    'ANN101',
+    'ANN102',
+    'S311',
+    'PLR0913',
+    'PLR2004',
+    'PLR0912',
+    'PLR0911',
+    'PLR0917',
+    'PLR0915',
+    'COM812',
+    'RUF012',
+    'PGH003',
+    'FBT003',
+    'C901',
 ]
-ignore = ["F401"]
+allowed-confusables = ["，", "：", "（", "）", "？", "！", "；"]
 
-[tool.ruff.pydocstyle]
-convention = "google"
+[tool.ruff.flake8-annotations]
+mypy-init-return = true
+
+[tool.ruff.flake8-builtins]
+builtins-ignorelist = ["id"]

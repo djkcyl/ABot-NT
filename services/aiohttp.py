@@ -15,14 +15,14 @@ class AiohttpClientService(Service):
         super().__init__()
 
     @property
-    def stages(self):
+    def stages(self) -> set[str]:
         return {"preparing", "cleanup"}
 
     @property
-    def required(self):
+    def required(self) -> set:
         return set()
 
-    async def launch(self, _: Launart):
+    async def launch(self, _: Launart) -> None:
         async with self.stage("preparing"):
             if self.session is None:
                 self.session = ClientSession(timeout=ClientTimeout(total=None))
