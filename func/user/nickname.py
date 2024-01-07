@@ -17,6 +17,7 @@ channel.meta = build_metadata(
     func_type=FuncType.user,
     name="昵称",
     version="1.0",
+    cmd_prefix="nickname",
     description="设置 ABot 称呼你时的昵称",
     usage=["发送指令：nickname <昵称>"],
     example=[{"run": "@ABot nickname 你好", "to": "设置昵称为“你好”"}],

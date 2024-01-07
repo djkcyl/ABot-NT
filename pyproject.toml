@@ -44,6 +44,7 @@ dev = ["black>=23.12.1", "isort>=5.13.2", "ruff>=0.1.11"]
 
 [tool.pdm.scripts]
 abot = "main.py"
+cloc = { shell = "git ls-files > list.txt && cloc --list-file=list.txt && rm list.txt" }
 
 [tool.black]
 line-length = 120

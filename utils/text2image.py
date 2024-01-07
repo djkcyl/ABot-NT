@@ -223,15 +223,18 @@ async def text2img(text: str, width: int = 800) -> bytes:
         extra_page_option=PageOption(viewport={"width": width, "height": 10}),
     )
 
-
-async def md2img(text: str, width: int = 800) -> bytes:
-    html = md_converter.convert(text)
+async def html2img(html: str, width: int = 800) -> bytes:
     html += await add_footer()
 
     return await html_render.render(
         html,
         extra_page_option=PageOption(viewport={"width": width, "height": 10}),
     )
+
+
+async def md2img(text: str, width: int = 800) -> bytes:
+    html = md_converter.convert(text)
+    return await html2img(html, width)
 
 
 async def template2img(
