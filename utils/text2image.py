@@ -203,10 +203,15 @@ def delete_old_cache() -> tuple[int, int]:
 
 async def html2img(
     html: str,
+    width: int = 800,
     page_option: PageOption | None = None,
     screenshot_option: ScreenshotOption | None = None,
 ) -> bytes:
     html += await add_footer()
+    if page_option is None:
+        page_option = PageOption(viewport={"width": width, "height": 10})
+    else:
+        page_option.viewport = {"width": width, "height": 10}
     return await html_render.render(
         html,
         extra_page_option=page_option,
@@ -216,14 +221,6 @@ async def html2img(
 
 async def text2img(text: str, width: int = 800) -> bytes:
     html = convert_text(text)
-    html += await add_footer()
-
-    return await html_render.render(
-        html,
-        extra_page_option=PageOption(viewport={"width": width, "height": 10}),
-    )
-
-async def html2img(html: str, width: int = 800) -> bytes:
     html += await add_footer()
 
     return await html_render.render(

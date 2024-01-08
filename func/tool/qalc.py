@@ -3,6 +3,8 @@ import asyncio
 from avilla.core import Context, MessageReceived
 from avilla.twilight.twilight import FullMatch, RegexResult, Twilight, WildcardMatch
 from graia.saya import Channel
+from graia.scheduler.saya.schema import SchedulerSchema
+from graia.scheduler.timers import crontabify
 from graiax.shortcut import dispatch, listen
 from loguru import logger
 
@@ -17,8 +19,9 @@ channel.meta = build_metadata(
     func_type=FuncType.tool,
     name="多功能计算器",
     version="1.0",
+    cmd_prefix="qalc",
     description="一款多用途的计算器，支持单位换算和转换，货币换算，数学表达式计算，日期计算，方程求解等",
-    usage=["发送指令：/qacl <expression>"],
+    usage=["发送指令：/qalc <expression>"],
     options=[{"name": "expression", "help": "要计算的表达式"}],
     example=[
         {"run": "/qalc 1+1", "to": "计算 1 加 1 的结果"},
@@ -28,10 +31,11 @@ channel.meta = build_metadata(
         {"run": "/qalc solve2(5x=2y^2; sqrt(y)=2; x; y)", "to": "解方程组 5x=2y^2 和 sqrt(y)=2"},
         {"run": "/qalc 50 Ω * 2 A", "to": "计算 50 欧姆的电阻器在 2 安培电流下的电压"},
     ],
+    maintain=True,
 )
 
 
-async def run_cli_command(command: str) -> str | None:
+async def run_cli_command(command: list[str]) -> str | None:
     process = await asyncio.create_subprocess_exec(
         *command, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
     )
@@ -39,10 +43,22 @@ async def run_cli_command(command: str) -> str | None:
     stdout, stderr = await process.communicate()
 
     if process.returncode == 0:
-        return stdout.decode().strip()
+        output = stdout.decode().strip()
+        logger.debug(f"Command: {command} Output: {output}")
+        return output
     logger.error(f"Error executing command: {command}")
     logger.error(stderr.decode().strip())
     return None
+
+
+@channel.use(SchedulerSchema(crontabify("0 * * * *")))
+async def update_qalc():  # noqa: ANN201
+    logger.info("[Task.qalc] Start update qalc exchange rate")
+    result = await run_cli_command(["qalc", "-e", "1-1"])
+    if result is None:
+        logger.error(f"[Task.qalc] Update qalc exchange rate failed")
+    else:
+        logger.success("[Task.qalc] Update qalc exchange rate success")
 
 
 @listen(MessageReceived)

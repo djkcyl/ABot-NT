@@ -20,7 +20,8 @@ channel = Channel.current()
 channel.meta = build_metadata(
     func_type=FuncType.tool,
     name="Minecraft服务器状态查询",
-    version="1.0",
+    version="1.1",
+    cmd_prefix="mcping",
     description="查询Minecraft服务器状态",
     usage=[
         "发送指令：mcping [bind] <address>",
@@ -48,26 +49,22 @@ channel.meta = build_metadata(
         preprocessor=MentionMe(),
     )
 )
-async def main(
+async def main(  # noqa: ANN201
     ctx: Context,
     agroup: GroupData,
     arg_bind: RegexResult,
     arg_address: RegexResult,
 ):
-    
-
     if arg_bind.result:
         if str(arg_address.result):
             # 请求绑定且提供了新的地址
             await set_bind(agroup.group_id, str(arg_address.result))
             await ctx.scene.send_message("服务器绑定成功")
+        elif await get_bind(agroup.group_id):
+            await delete_bind(agroup.group_id)
+            await ctx.scene.send_message("服务器解绑成功")
         else:
-            # 请求绑定但没有提供新的地址，执行解绑操作
-            if await get_bind(agroup.group_id):
-                await delete_bind(agroup.group_id)
-                await ctx.scene.send_message("服务器解绑成功")
-            else:
-                await ctx.scene.send_message("本群未绑定服务器，且未提供新的地址，无法解绑或绑定服务器")
+            await ctx.scene.send_message("本群未绑定服务器，且未提供新的地址，无法解绑或绑定服务器")
     else:
         address = str(arg_address.result) if arg_address.result else await get_bind(agroup.group_id)
         if address:

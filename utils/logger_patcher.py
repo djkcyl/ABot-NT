@@ -1,5 +1,6 @@
 """移植自 Ariadne"""
 
+from pathlib import Path
 import logging
 import sys
 import traceback
@@ -16,6 +17,7 @@ from loguru import logger
 if TYPE_CHECKING:
     from asyncio import AbstractEventLoop
 
+log_path = Path("logs")
 
 class LoguruHandler(logging.Handler):
     def emit(self, record) -> None:
@@ -106,7 +108,10 @@ def patch(loop: "AbstractEventLoop", level: str = "INFO") -> None:
 
     logger.remove()
     logger.add(sys.stderr, level=level, enqueue=True)
-
+    logger.add(log_path.joinpath("latest.log"), level="INFO", backtrace=True, diagnose=True, enqueue=True, catch=True, rotation="00:00", retention="1 year", compression="zip", encoding="utf-8")
+    logger.add(log_path.joinpath("warning.log"), level="WARNING", backtrace=True, diagnose=True, enqueue=True, catch=True, rotation="00:00", retention="3 weeks", compression="zip", encoding="utf-8")
+    logger.add(log_path.joinpath("debug.log"), level="DEBUG", backtrace=True, diagnose=True, enqueue=True, catch=True, rotation="00:00", retention="3 days", compression="zip", encoding="utf-8")
+    
     sys.excepthook = loguru_exc_callback
     # 下面两行有 bug, 在协程里抛出错误不会输出日志, 待修复
     # traceback.print_exception = loguru_exc_callback

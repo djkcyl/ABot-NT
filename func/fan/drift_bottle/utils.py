@@ -34,6 +34,13 @@ async def bottle_md_builder(s3file: S3File, bottle: DriftingBottle) -> str:
     if bottle.images:
         for i, image in enumerate(bottle.images):
             bottle_md += f"\n\n![漂流瓶图片{i}]({await s3file.get_presigned_url(image)})"
+    # discuss = await bottle.get_discuss()
+    # if discuss:
+    #     bottle_md += "\n\n---\n\n"
+    #     for i, d in enumerate(discuss):
+    #         bottle_md += f"\n\n### 评论{i + 1}："
+    #         bottle_md += f"\n\n- 评论用户：{d.aid}"
+    #         bottle_md += f"\n\n- 评论内容：{d.text}"
     return bottle_md
 
 

@@ -5,6 +5,7 @@ from enum import Enum, auto
 
 from beanie import Document, SortDirection
 from beanie.odm.operators.find.comparison import NE, Eq, In
+from beanie.odm.operators.update.general import Set
 from beanie.odm.queries.find import FindMany
 from pydantic import Field
 from pymongo import IndexModel
@@ -57,6 +58,16 @@ class DriftingBottle(Document):
 
     async def get_discuss_count(self) -> int:
         return await BottleDiscuss.find(Eq(BottleDiscuss.bottle_id, self.bottle_id)).count()
+
+    async def score_bottle(self, aid: int, score: int) -> None:
+        bottle_score = BottleScore.find_one(Eq(BottleScore.bottle_id, self.bottle_id), Eq(BottleScore.aid, aid))
+        await bottle_score.upsert(
+            Set({BottleScore.score: score}),
+            on_insert=BottleScore(bottle_id=self.bottle_id, aid=aid, score=score),
+        )  # type: ignore
+
+    async def discuss_bottle(self, aid: int, text: str) -> None:
+        await BottleDiscuss.insert(BottleDiscuss(bottle_id=self.bottle_id, aid=aid, text=text))
 
 
 class BottleScore(Document):
@@ -146,14 +157,24 @@ async def get_random_bottle() -> DriftingBottle | None:
 
 
 async def get_bottle_by_id(bottle_id: int) -> DriftingBottle | None:
-    return await DriftingBottle.find_one(Eq(DriftingBottle.bottle_id, bottle_id))
+    return await DriftingBottle.find_one(Eq(DriftingBottle.bottle_id, bottle_id), Eq(DriftingBottle.isdelete, False))
 
 
 def get_all_bottles() -> FindMany[DriftingBottle]:
-    return DriftingBottle.find()
+    return DriftingBottle.find(
+        NE(DriftingBottle.remaining_pickups, 0),
+        Eq(DriftingBottle.isdelete, False),
+        In(DriftingBottle.review_status, [ReviewStatus.APPROVED, ReviewStatus.AI_APPROVED]),
+    )
 
 
 def get_bottles_by_aid(aid: int) -> FindMany[DriftingBottle]:
     return DriftingBottle.find_many(Eq(DriftingBottle.aid, aid), Eq(DriftingBottle.isdelete, False)).sort(
+        ("_id", SortDirection.DESCENDING)
+    )
+
+
+def get_self_discuss(aid: int, bottle_id: int) -> FindMany[BottleDiscuss]:
+    return BottleDiscuss.find_many(Eq(BottleDiscuss.aid, aid), Eq(BottleDiscuss.bottle_id, bottle_id)).sort(
         ("_id", SortDirection.DESCENDING)
     )

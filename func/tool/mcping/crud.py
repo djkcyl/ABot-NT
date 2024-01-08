@@ -25,7 +25,7 @@ async def set_bind(group: str | int, address: str) -> None:
     await bind.upsert(
         Set({ServerBind.address: address}),
         on_insert=ServerBind(group_id=str(group), address=address),
-    )
+    ) # type: ignore
 
 
 async def delete_bind(group: str | int) -> None:
