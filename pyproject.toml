@@ -1,6 +1,6 @@
 [project]
 name = "ABot-Graia"
-version = "3.0.0.dev1"
+version = "3.0.0.beta1"
 description = ""
 authors = [{ name = "djkcyl", email = "cyl@cyllive.cn" }]
 dependencies = [
