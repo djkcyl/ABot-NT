@@ -22,7 +22,7 @@ from utils.logger_patcher import patch as patch_logger
 
 # 在 import 需要 kayaku 的包前需要先初始化 kayaku
 kayaku.initialize({"{**}": "./config/{**}"})
-os.environ["PLAYWRIGHT_BROWSERS_PATH"] = Path(__file__).parent.joinpath("static", "browser").as_posix()
+os.environ["PLAYWRIGHT_BROWSERS_PATH"] = Path(__file__).parent.joinpath("cache", "browser").as_posix()
 
 # ruff: noqa: E402
 from services import AiohttpClientService, MongoDBService, S3FileService

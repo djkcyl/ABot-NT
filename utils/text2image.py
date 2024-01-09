@@ -23,7 +23,6 @@ from playwright.async_api._generated import Request
 from qrcode.image.styledpil import StyledPilImage
 from qrcode.main import QRCode
 
-from core_bak.data_file import get_data_path
 from models.ad import AdvertisementCategory
 from services import AiohttpClientService, S3FileService
 from utils.builder import ADBuilder
@@ -37,7 +36,7 @@ DEFAULT_AD_PROBABILITY = 0.7
 
 font_file = "./static/font/sarasa-mono-sc-semibold.ttf"
 font = ImageFont.truetype(font_file, 22)
-cache = get_data_path("cache", "t2i")
+cache = Path("cache", "t2i")
 cache.mkdir(exist_ok=True, parents=True)
 
 qrcode = QRCode(image_factory=StyledPilImage)

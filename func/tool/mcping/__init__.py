@@ -21,8 +21,8 @@ channel.meta = build_metadata(
     func_type=FuncType.tool,
     name="Minecraft服务器状态查询",
     version="1.1",
-    cmd_prefix="mcping",
     description="查询Minecraft服务器状态",
+    cmd_prefix="mcping",
     usage=[
         "发送指令：mcping [bind] <address>",
     ],

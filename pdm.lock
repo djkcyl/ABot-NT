@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform"]
 lock_version = "4.4.1"
-content_hash = "sha256:4dde185e2ef49b4f11229ca442c0541e0cdc1a3657e16a77097451ac2e223aae"
+content_hash = "sha256:39baf9d50f32c4de57f84a245c2cbb717d5bacc391d13e87fc9af8dcd7a33cda"
 
 [[package]]
 name = "aiofile"
@@ -80,7 +80,7 @@ files = [
 
 [[package]]
 name = "arclet-alconna"
-version = "1.7.41"
+version = "1.7.42"
 requires_python = ">=3.8"
 summary = "A High-performance, Generality, Humane Command Line Arguments Parser Library."
 dependencies = [
@@ -89,32 +89,32 @@ dependencies = [
     "typing-extensions>=4.5.0",
 ]
 files = [
-    {file = "arclet_alconna-1.7.41-py3-none-any.whl", hash = "sha256:2e929cc45183d052c818a1bfb8fe79d4c534b1ef42bd4a3dd8e13792d3f22e02"},
-    {file = "arclet_alconna-1.7.41.tar.gz", hash = "sha256:76bd862a91a205f51d90506ab67218cee4876de8fdcffade1c4b8fee9740cd2c"},
+    {file = "arclet_alconna-1.7.42-py3-none-any.whl", hash = "sha256:fa78944121d4afa4e2c0247a98967ddb1e76cf63b94c8c3f4f393c52f6d23e75"},
+    {file = "arclet_alconna-1.7.42.tar.gz", hash = "sha256:a5a1cca37d0c3d58607ee22485e636fa0b01d40eb43194e542b2c3d6a5d2e70b"},
 ]
 
 [[package]]
 name = "arclet-alconna-avilla"
-version = "0.17.1"
+version = "0.17.3"
 requires_python = ">=3.8"
 summary = "Support Alconna to GraiaProject/Avilla"
 dependencies = [
-    "arclet-alconna-graia<0.18.0,>=0.17.1",
-    "avilla-core>=1.0.0a16",
+    "arclet-alconna-graia<0.18.0,>=0.17.3",
+    "avilla-core>=1.0.0a20",
 ]
 files = [
-    {file = "arclet_alconna_avilla-0.17.1-py3-none-any.whl", hash = "sha256:e44d110517efdaa398f27311dc1d402cc81b41df5c19f01078ac58264a25b3e8"},
-    {file = "arclet_alconna_avilla-0.17.1.tar.gz", hash = "sha256:ab7c77cd677f1fad9bda2b96dd2bf92cdb268f793dd2d691efc10a753d5b62bc"},
+    {file = "arclet_alconna_avilla-0.17.3-py3-none-any.whl", hash = "sha256:4bf228372f4b8b86520484d05d69595b1c4385640458eb69b4b64b5a909e93dc"},
+    {file = "arclet_alconna_avilla-0.17.3.tar.gz", hash = "sha256:5343b91ca542af73a0690dc44a2257e74ffbd6caecc2eb43b42ec5c191425059"},
 ]
 
 [[package]]
 name = "arclet-alconna-graia"
-version = "0.17.1"
+version = "0.17.3"
 requires_python = ">=3.8"
 summary = "Support Alconna to GraiaProject"
 dependencies = [
-    "arclet-alconna-tools<0.7.0,>=0.6.5",
-    "arclet-alconna<2.0.0,>=1.7.33",
+    "arclet-alconna-tools<0.7.0,>=0.6.10",
+    "arclet-alconna<2.0.0,>=1.7.42",
     "creart>=0.3.0",
     "graia-amnesia>=0.5.0",
     "graia-broadcast>=0.18.2",
@@ -124,8 +124,8 @@ dependencies = [
     "tarina>=0.3.3",
 ]
 files = [
-    {file = "arclet_alconna_graia-0.17.1-py3-none-any.whl", hash = "sha256:9b0f70114dcb481c749243b249d26b7899e9fb3396703577484f06fc044030ea"},
-    {file = "arclet_alconna_graia-0.17.1.tar.gz", hash = "sha256:79c0656b3a03870c3960b55716fa24594de9b3aa4ae5ebbd3911403b0bbc2efe"},
+    {file = "arclet_alconna_graia-0.17.3-py3-none-any.whl", hash = "sha256:60152583c1f2f3112766eb7d17076d2c086bda2ea6bd3636fb0c6b1ef4c3371f"},
+    {file = "arclet_alconna_graia-0.17.3.tar.gz", hash = "sha256:35aeaaa01640dc090ed5a135d52b45efc4f4bbfdf305688a9a134e77c16ce214"},
 ]
 
 [[package]]
@@ -154,32 +154,32 @@ files = [
 
 [[package]]
 name = "avilla-core"
-version = "1.0.0a20"
+version = "1.0.0a21"
 requires_python = ">=3.9"
 summary = ""
 dependencies = [
     "creart>=0.3.0",
-    "graia-amnesia>=0.8.1",
+    "graia-amnesia>=0.9.0",
     "graia-broadcast>=0.23.1",
     "launart>=0.8.2",
     "loguru>=0.6.0",
 ]
 files = [
-    {file = "avilla_core-1.0.0a20-py3-none-any.whl", hash = "sha256:706493e8409ac0e2d5df49eb5acbf3edb77dde688fc3882a2e8513e026a7bef1"},
-    {file = "avilla_core-1.0.0a20.tar.gz", hash = "sha256:6edb76228c4e954648595a77da438c558be965e2d045f268785beeeccc4c6579"},
+    {file = "avilla_core-1.0.0a21-py3-none-any.whl", hash = "sha256:bda5167905376dca9ddd4bfaccafa2fdf1e2419a6c738b0ab7827251abbdf26f"},
+    {file = "avilla_core-1.0.0a21.tar.gz", hash = "sha256:281acb73e0e5d223ed2f7ff746a467902a51bf2e4f70d763a986b34a68d95a39"},
 ]
 
 [[package]]
 name = "avilla-qqapi"
-version = "1.0.0a24"
+version = "1.0.0a27"
 requires_python = ">=3.9"
 summary = ""
 dependencies = [
     "aiohttp>=3.8.1",
 ]
 files = [
-    {file = "avilla_qqapi-1.0.0a24-py3-none-any.whl", hash = "sha256:0086093f176fb344ab746c514f0fd26ff47e4b90c984278d37c025fdd4716e41"},
-    {file = "avilla_qqapi-1.0.0a24.tar.gz", hash = "sha256:986012f6f8d8759064a7fb0142d946cb55805b033b4ae72741df61676de2a3cb"},
+    {file = "avilla_qqapi-1.0.0a27-py3-none-any.whl", hash = "sha256:2e7856b855623003a40f56c127079e5ba6a9820270b34d44e75de034fc760d30"},
+    {file = "avilla_qqapi-1.0.0a27.tar.gz", hash = "sha256:1ec41ed4f8e8dc13e5597c2eb5bbb56960902f29199c34c1364e16b01a4ff1a5"},
 ]
 
 [[package]]
@@ -349,17 +349,16 @@ files = [
 
 [[package]]
 name = "graia-amnesia"
-version = "0.8.2"
+version = "0.9.0"
 requires_python = "<4.0,>=3.8"
 summary = "a collection of shared components for graia"
 dependencies = [
     "launart<1.0.0,>=0.7.0",
     "typing-extensions>=4.0.0",
-    "uvicorn>=0.23.2",
 ]
 files = [
-    {file = "graia_amnesia-0.8.2-py3-none-any.whl", hash = "sha256:e9f882e98f02295e82678c9d422dcdb30612c2adb1a19f972627e0da83a41485"},
-    {file = "graia_amnesia-0.8.2.tar.gz", hash = "sha256:1b6c253c02dfa874ff6fcdba1e6700804c852ad3cadca4e9e76a33033b2c0438"},
+    {file = "graia_amnesia-0.9.0-py3-none-any.whl", hash = "sha256:c78fd34e5955122575744a5b7d78fc636cee644e15eea543d68d07dfe12c6cf1"},
+    {file = "graia_amnesia-0.9.0.tar.gz", hash = "sha256:0a211c35eb55449b0ecfcdb1793148a1c525205d465e8202c242ab8924fc1ee0"},
 ]
 
 [[package]]
@@ -1168,20 +1167,6 @@ summary = "HTTP library with thread-safe connection pooling, file post, and more
 files = [
     {file = "urllib3-2.1.0-py3-none-any.whl", hash = "sha256:55901e917a5896a349ff771be919f8bd99aff50b79fe58fec595eb37bbc56bb3"},
     {file = "urllib3-2.1.0.tar.gz", hash = "sha256:df7aa8afb0148fa78488e7899b2c59b5f4ffcfa82e6c54ccb9dd37c1d7b52d54"},
-]
-
-[[package]]
-name = "uvicorn"
-version = "0.25.0"
-requires_python = ">=3.8"
-summary = "The lightning-fast ASGI server."
-dependencies = [
-    "click>=7.0",
-    "h11>=0.8",
-]
-files = [
-    {file = "uvicorn-0.25.0-py3-none-any.whl", hash = "sha256:ce107f5d9bd02b4636001a77a4e74aab5e1e2b146868ebbad565237145af444c"},
-    {file = "uvicorn-0.25.0.tar.gz", hash = "sha256:6dddbad1d7ee0f5140aba5ec138ddc9612c5109399903828b4874c9937f009c2"},
 ]
 
 [[package]]

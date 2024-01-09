@@ -16,6 +16,7 @@ channel.meta = build_metadata(
     name="个人数据",
     version="1.1",
     description="查看个人数据，例如签到天数等",
+    cmd_prefix="mydata",
     can_be_disabled=False,
 )
 

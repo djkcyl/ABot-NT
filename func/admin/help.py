@@ -18,6 +18,7 @@ channel.meta = build_metadata(
     name="帮助",
     version="1.4",
     description="打开帮助菜单",
+    cmd_prefix="help",
     usage=["发送指令：help <id>"],
     options=[{"name": "id", "help": "功能的id，填写后会显示该功能的详细帮助信息，可选"}],
     example=[{"run": "help", "to": "打开帮助菜单"}, {"run": "help 1", "to": "打开第一个功能的帮助菜单"}],
@@ -28,7 +29,7 @@ saya = Saya.current()
 
 @listen(MessageReceived)
 @dispatch(
-    Twilight([UnionMatch("help", "帮助", "菜单"), "func_id" @ WildcardMatch(optional=True)], preprocessor=MentionMe())
+    Twilight([UnionMatch("help", "帮助", "菜单", "功能"), "func_id" @ WildcardMatch(optional=True)], preprocessor=MentionMe())
 )
 async def main_menu(  # noqa: ANN201
     ctx: Context,

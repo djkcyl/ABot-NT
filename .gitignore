@@ -5,9 +5,8 @@ __pycache__/
 *_bak/
 .vscode/
 config/
-static/
+static/font/*
+cache/
 logs/
 
 test.py
-
-func/**/_*

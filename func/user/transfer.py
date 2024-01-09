@@ -24,6 +24,7 @@ channel.meta = build_metadata(
     name="转账",
     version="1.2",
     description="转移游戏币给其他人",
+    cmd_prefix="transfer",
     usage=["发送指令：transfer <At / aid> <数量> [-a, --all]"],
     options=[
         {

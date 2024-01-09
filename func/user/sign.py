@@ -18,7 +18,8 @@ channel.meta = build_metadata(
     name="签到",
     version="1.0",
     description="用户签到，游戏币唯一的凭空来源",
-    usage=["发送指令：签到"],
+    cmd_prefix="sign",
+    usage=["发送指令：sign"],
     can_be_disabled=False,
 )
 
@@ -28,7 +29,7 @@ channel.meta = build_metadata(
 async def main(ctx: Context, auser: AUser, group: GroupData):  # noqa: ANN201
     if await auser.sign(group.group_id):
         if auser.continue_sign % 30 == 0:
-            continue_reward = random.randint(0, 170)
+            continue_reward = random.randint(0, 160)
             continue_twxt = f"获得 {continue_reward} 游戏币"
         elif auser.continue_sign % 7 == 0:
             continue_reward = random.randint(0, 40)
@@ -41,7 +42,7 @@ async def main(ctx: Context, auser: AUser, group: GroupData):  # noqa: ANN201
 
         frist_sign_gold = 328 if auser.total_sign == 1 else 0
         gold_add = (
-            (random.randint(34, 112) if random.randint(1, 10) == 1 else random.randint(15, 67))
+            (random.randint(31, 92) if random.randint(1, 10) == 1 else random.randint(15, 47))
             + continue_reward
             + frist_sign_gold
         )
