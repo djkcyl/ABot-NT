@@ -47,6 +47,9 @@ class BasicConfig:
     debug: bool = False
     """是否启用调试模式"""
     protocol: Protocol = field(default_factory=Protocol)
+    """协议配置"""
+    owner: int = 0
+    """机器人所有者 AID"""
     database_uri: str = "mongodb://localhost:27017"
     """MongoDB数据库uri"""
     s3file: S3FileConfig = field(default_factory=S3FileConfig)

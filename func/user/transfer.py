@@ -117,7 +117,7 @@ async def main(  # noqa: ANN201
     async def waiter(waiter_ctx: Context, message: MessageChain) -> bool | None:
         if waiter_ctx.client != ctx.client:
             return None
-        message_str = str(message.get_first(Text)).strip().lower()
+        message_str = str(message.get_first(Text)).removeprefix("/").strip().lower()
         if message_str in {"y", "yes", "是"}:
             return True
         if message_str in {"n", "no", "否"}:

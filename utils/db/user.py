@@ -1,14 +1,12 @@
 from datetime import datetime
-from typing import Literal
 
 from beanie import Document
 from pydantic import Field
 from pymongo import IndexModel
 
-from models.ad import AdvertisementCategory
-from models.tcm.ims import IMSResponseModel
-from models.tcm.tms import TMSResponseModel
 from utils.datetime import CHINA_TZ
+
+from .log import BanLog, CoinLog, SignLog
 
 
 class AUser(Document):
@@ -22,12 +20,68 @@ class AUser(Document):
     total_sign: int = 0
     totle_talk: int = 0
     continue_sign: int = 0
+    exp: int = 0
     banned: bool = False
     join_time: datetime = Field(default_factory=datetime.now, tzinfo=CHINA_TZ)
 
     class Settings:
         name = "core_user"
         indexes = [IndexModel("aid", unique=True), IndexModel("cid", unique=True)]
+
+    @property
+    def level(self) -> int:
+        """计算用户等级"""
+        level_map = [0, 200, 1500, 4500, 10800, 28800, 74100, 190300, 488300]
+        for i, v in enumerate(level_map):
+            if self.exp < v:
+                return i
+        return len(level_map)
+
+    @property
+    def next_level_exp(self) -> int:
+        """计算下一等级需要达到的经验"""
+        level_map = [0, 200, 1500, 4500, 10800, 28800, 74100, 190300, 488300]
+        for v in level_map:
+            if self.exp < v:
+                return v
+        return 0
+
+    @property
+    def next_level_need(self) -> int:
+        """计算距离升级下一等级还需要多少经验"""
+        return self.next_level_exp - self.exp
+
+    @property
+    def exp_to_next_level(self) -> int:
+        """计算当前等级升级到下一等级需要多少经验"""
+        level_map = [0, 200, 1500, 4500, 10800, 28800, 74100, 190300, 488300]
+        current_level = self.level
+        if current_level >= len(level_map):
+            return 0  # 当前等级已是最高等级，没有下一级
+        return level_map[current_level] - level_map[current_level - 1]
+
+    @property
+    def progress_bar(self) -> str:
+        """计算用户经验进度条"""
+        total_length = 30
+        # 计算当前等级起始的经验值
+        current_level_start_exp = self.next_level_exp - self.exp_to_next_level
+
+        # 从当前等级升级到下一等级所需的总经验
+        exp_for_next_level = self.exp_to_next_level
+
+        if exp_for_next_level == 0:
+            # 当前等级已是最高等级，进度条为满
+            return "[" + "#" * total_length + "] 100.0%"
+
+        # 计算当前经验在当前等级的进度比例
+        progress_ratio = (self.exp - current_level_start_exp) / exp_for_next_level
+        progress_ratio = min(progress_ratio, 0.999)  # 确保进度条不会因为计算误差而显示为 100%
+        progress_length = int(progress_ratio * total_length)
+        progress_bar = "#" * progress_length
+        remaining_bar = "-" * (total_length - progress_length)
+
+        return f"[{progress_bar}{remaining_bar}] {progress_ratio * 100:.1f}%"
 
     async def sign(self, group_id: str | int) -> bool:
         if self.is_sign:
@@ -136,105 +190,3 @@ class AUser(Document):
     async def set_nickname(self, nickname: str | None) -> None:
         self.nickname = nickname
         await self.save()  # type: ignore
-
-class SignLog(Document):
-    qid: str
-    group_id: str
-    sign_time: datetime = Field(default_factory=datetime.now, tzinfo=CHINA_TZ)
-
-    class Settings:
-        name = "core_log_sign"
-        indexes = [IndexModel("qid")]
-
-
-class CoinLog(Document):
-    qid: str
-    group_id: str | None
-    coin: int
-    source: str
-    detail: str = ""
-    time: datetime = Field(default_factory=datetime.now, tzinfo=CHINA_TZ)
-
-    class Settings:
-        name = "core_log_coin"
-        indexes = [IndexModel("qid")]
-
-
-class BanLog(Document):
-    target_id: str
-    target_type: Literal["user", "group"]
-    action: Literal["ban", "unban"]
-    ban_time: datetime = Field(default_factory=datetime.now, tzinfo=CHINA_TZ)
-    ban_reason: str | None = None
-    ban_source: str | None = None
-
-    class Settings:
-        name = "core_log_ban"
-
-
-class GroupData(Document):
-    group_id: str
-    disable_functions: list[str] = []
-    banned: bool = False
-
-    class Settings:
-        name = "core_group"
-        indexes = [IndexModel("group_id", unique=True)]
-
-
-class Advertisement(Document):
-    ad_id: str
-    content: str
-    content_type: int
-    ad_category: AdvertisementCategory
-    source: str
-    start_date: datetime = Field(default_factory=datetime.now, tzinfo=CHINA_TZ)
-    end_date: datetime
-    weight: int = 1
-    target_audience: list[str] = []
-    is_active: bool = True
-    bid_price: int = 0
-
-    class Settings:
-        name = "core_ad"
-        indexes = [IndexModel("ad_id", unique=True), IndexModel("bid_price")]
-
-    async def activate(self) -> None:
-        self.is_active = True
-        await self.save()  # type: ignore
-
-    async def deactivate(self) -> None:
-        self.is_active = False
-        await self.save()  # type: ignore
-
-
-class AdDisplayLog(Document):
-    ad_id: str
-    display_time: datetime = Field(default_factory=datetime.now, tzinfo=CHINA_TZ)
-    scene_id: str
-    client_id: str
-    target_audience: list[str]
-
-    class Settings:
-        name = "core_log_ad_display"
-        indexes = [IndexModel("ad_id")]
-
-
-class ImageContentReviewLog(Document):
-    image_id: str
-    review_time: datetime = Field(default_factory=datetime.now, tzinfo=CHINA_TZ)
-    result: IMSResponseModel
-
-    class Settings:
-        name = "core_log_content_review:image"
-        indexes = [IndexModel("image_id")]
-
-
-class TextContentReviewLog(Document):
-    text_md5: str
-    review_time: datetime
-    result: TMSResponseModel
-
-    class Settings:
-        name = "core_log_content_review:text"
-        indexes = [IndexModel("text_md5")]

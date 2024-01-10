@@ -136,6 +136,7 @@ ignore = [
     'RUF012',
     'PGH003',
     'FBT003',
+    'RET503',
     'C901',
 ]
 allowed-confusables = ["，", "：", "（", "）", "？", "！", "；"]

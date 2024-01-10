@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class MongoDBService(Service):
-    id: str = "database/mongodb_init"
+    id: str = "abot/mongodb"
     supported_interface_types = {AgnosticDatabase}
 
     client: "AgnosticDatabase"

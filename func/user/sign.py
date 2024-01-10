@@ -42,7 +42,7 @@ async def main(ctx: Context, auser: AUser, group: GroupData):  # noqa: ANN201
 
         frist_sign_gold = 328 if auser.total_sign == 1 else 0
         gold_add = (
-            (random.randint(31, 92) if random.randint(1, 10) == 1 else random.randint(15, 47))
+            (random.randint(28, 92) if random.randint(1, 10) == 1 else random.randint(15, 47))
             + continue_reward
             + frist_sign_gold
         )

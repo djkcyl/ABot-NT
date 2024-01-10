@@ -1,4 +1,5 @@
 from io import BytesIO
+import re
 from typing import Annotated
 
 from avilla.core import Context, MessageChain, MessageReceived, Picture, Text
@@ -93,11 +94,13 @@ async def bottle_handler(ctx: Context, auser: AUser):  # noqa: ANN201
 @dispatch(
     Twilight(
         [
-            RegexMatch(r"((bottle|漂流瓶)\s+(drop|release|throw|丢|扔|放生))|((丢|扔|放生)(漂流瓶|瓶子))"),
+            RegexMatch(
+                r"((bottle|漂流瓶)\s+(drop|release|throw|丢(漂流瓶)?|扔(漂流瓶)?|放生(漂流瓶)?))|((丢|扔|放生)(漂流瓶|瓶子))"
+            ),
             "arg_remaining" @ ArgumentMatch("-r", "--remaining", default=-1, optional=True),
             "arg_anonymous" @ ArgumentMatch("-a", "--anonymous", action="store_true", optional=True),
             FullMatch("\n", optional=True),
-            "arg_anythings" @ WildcardMatch(optional=True),
+            "arg_anythings" @ WildcardMatch(optional=True).flags(re.S),
         ],
         preprocessor=MentionMe(),
     )
@@ -148,8 +151,8 @@ async def throw_bottle_handler(  # noqa: ANN201
     if images:
         logger.info("[Func.drift_bottle] 正在审核漂流瓶图片")
         for i, image in enumerate(images, 1):
-            image_name: str = image.resource.filename
-            image_url: str = image.resource.url
+            image_name: str = image.resource.filename  # type: ignore
+            image_url: str = image.resource.url  # type: ignore
             if await s3file.object_exists(image_name):
                 try:
                     image_response = await s3file.get_object(image_name)
@@ -218,7 +221,7 @@ async def throw_bottle_handler(  # noqa: ANN201
     async def waiter(waiter_ctx: Context, message: MessageChain) -> bool | None:
         if waiter_ctx.client != ctx.client:
             return None
-        message_str = str(message.get_first(Text)).strip().lower()
+        message_str = str(message.get_first(Text)).removeprefix("/").strip().lower()
         if message_str in ["y", "yes", "是"]:
             return True
         if message_str in ["n", "no", "否"]:
@@ -239,7 +242,7 @@ async def throw_bottle_handler(  # noqa: ANN201
             group_data.group_id,
             text,
             remaining,
-            [x.resource.filename for x in images],
+            [x.resource.filename for x in images],  # type: ignore
             ReviewStatus.PENDING if review_list else ReviewStatus.AI_APPROVED,
             anonymous=anonymous,
         )
@@ -251,7 +254,10 @@ async def throw_bottle_handler(  # noqa: ANN201
 
 @listen(MessageReceived)
 @dispatch(
-    Twilight([RegexMatch(r"((bottle|漂流瓶)\s+(fish|get|打?捞))|(打?捞(漂流瓶|瓶子))|lplp|l'p'l'p")], preprocessor=MentionMe())
+    Twilight(
+        [RegexMatch(r"((bottle|漂流瓶)\s+(fish|get|打?捞))|(打?捞(漂流瓶|瓶子))|lplp|l'p'l'p")],
+        preprocessor=MentionMe(),
+    )
 )
 async def fish_bottle_handler(ctx: Context, group_data: GroupData, auser: AUser, s3file: S3File):  # noqa: ANN201
     bottle = await get_random_bottle()

@@ -26,6 +26,7 @@ os.environ["PLAYWRIGHT_BROWSERS_PATH"] = Path(__file__).parent.joinpath("cache",
 
 # ruff: noqa: E402
 from services import AiohttpClientService, MongoDBService, S3FileService
+from services.plugin_init import PluginInitService
 from utils.config import BasicConfig
 from utils.saya.dispachers import ABotDispatcher
 
@@ -56,6 +57,7 @@ launart.add_component(
         config.s3file.endpoint, config.s3file.access_key, config.s3file.secret_key, secure=config.s3file.secure
     )
 )
+launart.add_component(PluginInitService())
 launart.add_component(PlaywrightService())
 launart.add_component(AlconnaGraiaService(AlconnaAvillaAdapter, enable_cache=False, global_remove_tome=True))
 

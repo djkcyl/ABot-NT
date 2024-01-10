@@ -29,12 +29,13 @@ async def main(ctx: Context, auser: AUser):  # noqa: ANN201
             await md2img(
                 f"# 个人信息\n\n"
                 f"AID：{auser.aid}\n"
+                f"\n> Lv.{auser.level} / {auser.exp}  \n{auser.progress_bar}\n\n"
                 + (
                     f"- 昵称：{auser.nickname}\n"
                     if auser.nickname
                     else "> 您还没有设置昵称，使用 “@ABot /nickname <昵称>” 来设置昵称\n"
-                )
-                + f"- 签到天数：{auser.total_sign}\n"
+                ) +
+                f"- 签到天数：{auser.total_sign}\n"
                 f"- 签到连续天数：{auser.continue_sign}\n"
                 f"- 游戏币：{auser.coin}\n"
                 f"- 从有记录以来共 At ABot {auser.totle_talk} 次\n",

@@ -1,5 +1,6 @@
 from aiohttp import ClientSession
 from avilla.core import MessageReceived
+from graia.amnesia.builtins.memcache import Memcache, MemcacheService
 from graia.broadcast.entities.dispatcher import BaseDispatcher
 from graia.broadcast.interfaces.dispatcher import DispatcherInterface
 from launart import Launart
@@ -14,7 +15,7 @@ class ABotDispatcher(BaseDispatcher):
     @staticmethod
     async def catch(
         interface: DispatcherInterface[MessageReceived],
-    ) -> AUser | GroupData | S3File | ClientSession | None:
+    ) -> AUser | GroupData | S3File | ClientSession | Memcache | None:
         ctx = interface.event.context
         if interface.annotation == AUser:
             cid = ctx.client.last_value
@@ -48,5 +49,8 @@ class ABotDispatcher(BaseDispatcher):
 
         if interface.annotation == ClientSession:
             return manager.get_component(AiohttpClientService).session
+
+        if interface.annotation == Memcache:
+            return manager.get_component(MemcacheService).cache
 
         return None
