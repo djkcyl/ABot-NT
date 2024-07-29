@@ -86,7 +86,7 @@ def qrdecode(img: bytes) -> int:
 @dispatch(Twilight([UnionMatch("bottle", "漂流瓶")], preprocessor=MentionMe()))
 async def bottle_handler(ctx: Context, auser: AUser):  # noqa: ANN201
     self_bottle = await get_bottles_by_aid(auser.aid).count()
-    self_text = "你还没有丢过漂流瓶哦！" if not self_bottle else f"你共投掷 {self_bottle} 个漂流瓶"
+    self_text = f"你共投掷 {self_bottle} 个漂流瓶" if self_bottle else "你还没有丢过漂流瓶哦！"
     await ctx.scene.send_message(f"当前池子内共有 {await get_all_bottles().count()} 个漂流瓶，{self_text}")
 
 
@@ -347,7 +347,9 @@ async def check_bottle_handler(  # noqa: ANN201
         preprocessor=MentionMe(),
     )
 )
-async def delete_bottle_handler(ctx: Context, arg_bottle_id: Annotated[MessageChain, ResultValue()], auser: AUser):  # noqa: ANN201
+async def delete_bottle_handler(
+    ctx: Context, arg_bottle_id: Annotated[MessageChain, ResultValue()], auser: AUser
+):  # noqa: ANN201
     if not arg_bottle_id:
         return await ctx.scene.send_message("请输入要删除的漂流瓶编号！")
     try:

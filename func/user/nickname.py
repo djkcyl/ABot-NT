@@ -35,9 +35,9 @@ channel.meta = build_metadata(
 async def main(ctx: Context, auser: AUser, arg_nickname: Annotated[MessageChain, ResultValue()]):  # noqa: ANN201
     if not arg_nickname:
         return await ctx.scene.send_message(
-            "你还没有设置昵称哦"
-            if not auser.nickname
-            else f"你的昵称是：{auser.nickname}，要修改的话请发送：@ABot nickname <昵称>"
+            f"你的昵称是：{auser.nickname}，要修改的话请发送：@ABot nickname <昵称>"
+            if auser.nickname
+            else "你还没有设置昵称哦"
         )
 
     nickname = str(arg_nickname.get_first(Text)).strip()

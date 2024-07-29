@@ -33,6 +33,4 @@ class HttpProfile:
     @property
     def url(self) -> str:
         url = urlparse(self.endpoint)
-        if not url.hostname:
-            return "https://" + self.endpoint
-        return self.endpoint
+        return f"https://{self.endpoint}" if not url.hostname else self.endpoint
