@@ -9,6 +9,7 @@ import kayaku
 from arclet.alconna.avilla import AlconnaAvillaAdapter
 from arclet.alconna.graia import AlconnaBehaviour, AlconnaGraiaService
 from avilla.core.application import Avilla
+from avilla.onebot.v11.protocol import OneBot11ForwardConfig, OneBot11Protocol
 from avilla.qqapi.protocol import QQAPIConfig, QQAPIProtocol
 from creart import it
 from graia.broadcast import Broadcast
@@ -74,6 +75,11 @@ if config.protocol.QQAPI.enabled:
                 config.protocol.QQAPI.intent,
                 config.protocol.QQAPI.is_sandbox,
             )
+        )
+    )
+    avilla.apply_protocols(
+        OneBot11Protocol().configure(
+            OneBot11ForwardConfig(config.protocol.OneBot11.forward_url, config.protocol.OneBot11.forward_token)
         )
     )
 

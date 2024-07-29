@@ -63,9 +63,16 @@ def handle_description(status: dict, messages: list[str | Picture]) -> None:
 
 def handle_version(status: dict, messages: list[str | Picture]) -> None:
     version_name = status.get("version", {}).get("name", "")
+    s_name = ""
+    s_packagever = ""
     if "Requires" in version_name:
         s_type = "Vanilla"
         s_ver = version_name
+    elif "modpackData" in status:
+        s_type = "Modpack"
+        s_ver = version_name
+        s_packagever = status["modpackData"]["version"]
+        s_name = status["modpackData"]["name"]
     else:
         s_type, _, s_ver = version_name.rpartition(" ")
         s_type = s_type or "Vanilla（或未知）"
@@ -75,9 +82,11 @@ def handle_version(status: dict, messages: list[str | Picture]) -> None:
 
     messages.extend(
         (
-            f"游戏版本：{s_ver}\n",
-            f"协议版本：{s_dev_ver}\n",
             f"服务端：{s_type}\n",
+            f"游戏版本：{s_ver}\n",
+            f"整合包名称：{s_name}\n" if s_name else "",
+            f"整合包版本：{s_packagever}\n" if s_packagever else "",
+            f"协议版本：{s_dev_ver}\n",
             f"玩家数：{s_player}",
         )
     )

@@ -3,6 +3,7 @@ from typing import Optional
 
 from avilla.qqapi.protocol import Intents
 from kayaku import config
+from yarl import URL
 
 
 @dataclass
@@ -19,11 +20,18 @@ class QQAPIConfig:
     is_sandbox: bool = False
     """是否是沙箱环境"""
 
+@dataclass
+class OneBot11ForwardConfig:
+    forward_url: URL = field(default_factory=URL)
+    forward_token: str = "undefined"
+    bot_id: str = "undefined"
+
 
 @dataclass
 class Protocol:
     QQAPI: QQAPIConfig = field(default_factory=QQAPIConfig)
-
+    """QQAPI协议配置"""
+    OneBot11: OneBot11ForwardConfig = field(default_factory=OneBot11ForwardConfig)
 
 @dataclass
 class S3FileConfig:

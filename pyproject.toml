@@ -4,34 +4,35 @@ version = "3.0.0.beta1"
 description = ""
 authors = [{ name = "djkcyl", email = "cyl@cyllive.cn" }]
 dependencies = [
-    "arclet-alconna-avilla>=0.17.3",
-    "avilla-core>=1.0.0a21",
-    "avilla-qqapi>=1.0.0a27",
+    "arclet-alconna-avilla>=0.18.3",
+    "avilla-core>=1.0.0a26",
+    "avilla-qqapi>=1.0.0a31",
     "avilla-twilight>=0.3.1",
-    "beanie>=1.24.0",
+    "beanie>=1.26.0",
     "creart>=0.3.0",
-    "dnspython>=2.4.2",
+    "dnspython>=2.6.1",
     "graia-amnesia>=0.9.0",
-    "graia-broadcast>=0.23.4",
+    "graia-broadcast>=0.23.5",
     "graia-saya>=0.0.19",
     "graia-scheduler>=0.3.1",
     "graiax-playwright>=0.4.1",
     "graiax-shortcut>=0.1.0",
     "kayaku>=0.5.4",
     "launart>=0.8.2",
-    "motor>=3.3.2",
-    "miniopy-async>=1.18",
-    "httpx>=0.26.0",
-    "pillow>=10.2.0",
+    "motor>=3.5.1",
+    "miniopy-async>=1.20.1",
+    "httpx>=0.27.0",
+    "pillow>=10.4.0",
     "graiax-text2img-playwright>=0.5.0",
-    "jinja2>=3.1.2",
-    "rich>=13.7.0",
+    "jinja2>=3.1.4",
+    "rich>=13.7.1",
     "qrcode>=7.4.2",
-    "numpy>=1.26.3",
+    "numpy==1.26.4",
     "pyzbar>=0.1.9",
-    "nh3>=0.2.15",
+    "nh3>=0.2.18",
+    "avilla-onebot-v11>=1.0.0a28",
 ]
-requires-python = ">=3.12"
+requires-python = "<3.13,>=3.10"
 readme = "README.md"
 license = { text = "AGPL-3.0-only" }
 
@@ -41,9 +42,9 @@ build-backend = "pdm.backend"
 
 [tool.pdm.dev-dependencies]
 dev = [
-    "black>=23.12.1",
+    "black>=24.4.2",
     "isort>=5.13.2",
-    "ruff>=0.1.11",
+    "ruff>=0.5.5",
 ]
 
 [tool.pdm.scripts]
