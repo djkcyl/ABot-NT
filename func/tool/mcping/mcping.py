@@ -5,7 +5,8 @@ import json
 import re
 from io import BytesIO
 
-import dns.resolver
+import aiodns
+from aiodns.error import DNSError
 from avilla.core import Picture
 from loguru import logger
 from PIL import Image
@@ -14,15 +15,19 @@ from utils.message.picture import SelfPicture
 
 from .statusping import StatusPing
 
+resolver = aiodns.DNSResolver(loop=asyncio.get_event_loop(), nameservers=["223.5.5.5"])
+
+
+async def srv_dns_resolver(host: str) -> tuple[str, int] | tuple[None, None]:
+    with contextlib.suppress(DNSError):
+        srv_records = await resolver.query(f"_minecraft._tcp.{host}", "SRV")
+        host = srv_records[0].host
+        port = srv_records[0].port
+        return host, port
+    return None, None
+
 
 def ping_status(host: str, port: int | None = None) -> dict:
-    if port is None:
-        with contextlib.suppress(Exception):
-            srv_records = dns.resolver.query(f"_minecraft._tcp.{host}", "SRV")
-            for srv in srv_records:
-                host = str(srv.target).rstrip(".")
-                port = srv.port
-                break
     status_ping = StatusPing(host, port or 25565)
     status = status_ping.get_status()
     status_str = json.dumps(status)
@@ -32,9 +37,14 @@ def ping_status(host: str, port: int | None = None) -> dict:
     return status
 
 
-def get_server_status(say: str) -> dict:
+async def get_server_status(say: str) -> dict:
     host, _, port = say.partition(":")
-    return ping_status(host, int(port) if port else None)
+    if port is not None:
+        return await asyncio.to_thread(ping_status, host, int(port))
+    _host, _port = await srv_dns_resolver(host)
+    if _host is None:
+        return await asyncio.to_thread(ping_status, host, int(port))
+    return await asyncio.to_thread(ping_status, _host, _port)
 
 
 async def handle_favicon(status: dict, messages: list[str | Picture]) -> None:
@@ -115,7 +125,7 @@ def handle_mods(status: dict, messages: list[str | Picture]) -> None:
 
 async def get_mcping(say: str) -> list[str | Picture]:
     try:
-        status = await asyncio.to_thread(get_server_status, say)
+        status = await get_server_status(say)
     except Exception as e:
         return [f"服务器信息获取失败\n{type(e)}: {e}"]
 

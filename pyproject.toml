@@ -10,7 +10,6 @@ dependencies = [
     "avilla-twilight>=0.3.1",
     "beanie>=1.26.0",
     "creart>=0.3.0",
-    "dnspython>=2.6.1",
     "graia-amnesia>=0.9.0",
     "graia-broadcast>=0.23.5",
     "graia-saya>=0.0.19",
@@ -27,10 +26,11 @@ dependencies = [
     "jinja2>=3.1.4",
     "rich>=13.7.1",
     "qrcode>=7.4.2",
-    "numpy==1.26.4",
+    "numpy>=2.0.1",
     "pyzbar>=0.1.9",
     "nh3>=0.2.18",
     "avilla-onebot-v11>=1.0.0a28",
+    "aiodns>=3.2.0",
 ]
 requires-python = "<3.13,>=3.10"
 readme = "README.md"
