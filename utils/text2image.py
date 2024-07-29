@@ -168,8 +168,8 @@ async def create_image(text: str, cut: int = 64) -> bytes:
 def _create_pil_image(text: str, cut: int) -> bytes:
     cut_str = "\n".join(get_cut_str(text, cut))
     text_box = font.getbbox(cut_str)
-    textx = text_box[2] - text_box[0]
-    texty = text_box[3] - text_box[1]
+    textx = int(text_box[2] - text_box[0])
+    texty = int(text_box[3] - text_box[1])
     image = Image.new("RGB", (textx + 40, texty + 40), (235, 235, 235))
     draw = ImageDraw.Draw(image)
     draw.text((20, 20), cut_str, font=font, fill=(31, 31, 33))
@@ -210,7 +210,7 @@ async def html2img(
     if page_option is None:
         page_option = PageOption(viewport={"width": width, "height": 10})
     else:
-        page_option.viewport = {"width": width, "height": 10}
+        page_option["viewport"] = {"width": width, "height": 10}
     return await html_render.render(
         html,
         extra_page_option=page_option,

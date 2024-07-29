@@ -1,4 +1,5 @@
 import ssl
+from typing import TYPE_CHECKING
 
 from aiohttp import ClientResponseError, ClientSession
 from avilla.core import MessageChain, MessageReceived, Picture
@@ -27,6 +28,9 @@ channel.meta = build_metadata(
 async def main(message: MessageChain, auser: AUser, s3f: S3File, asynchttp: ClientSession):  # noqa: ANN201
     await auser.add_talk()
     for element in message.include(Picture):
+        if TYPE_CHECKING and not isinstance(element, Picture):
+            return
+        # TODO: 更改获取图片信息的方式
         image_url = element.resource.url
         image_name = element.resource.filename
         content_type = element.resource.content_type
