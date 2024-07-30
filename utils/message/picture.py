@@ -17,6 +17,13 @@ class SelfPicture:
         return Picture(UrlResource(url))
 
     async def from_data(self, data: bytes | BytesIO, image_format: str | None = None) -> Picture:
+        if isinstance(data, BytesIO):
+            return Picture(RawResource(data.getvalue()))
+        if isinstance(data, bytes):
+            return Picture(RawResource(data))
+        msg = "data 类型错误"
+        raise ValueError(msg)
+
         # 如果没有指定格式, 那么就尝试从 data 中获取
         if not image_format:
             if isinstance(data, BytesIO):

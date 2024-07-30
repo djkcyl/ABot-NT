@@ -22,7 +22,8 @@ class QQAPIConfig:
 
 @dataclass
 class OneBot11ForwardConfig:
-    forward_url: URL = field(default_factory=URL)
+    enable: bool = False
+    forward_url: str = "undefined"
     forward_token: str = "undefined"
     bot_id: str = "undefined"
 

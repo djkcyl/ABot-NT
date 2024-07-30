@@ -2,6 +2,7 @@
 
 import os
 import pkgutil
+import sys
 from asyncio import AbstractEventLoop
 from pathlib import Path
 
@@ -18,6 +19,8 @@ from graia.scheduler import GraiaScheduler
 from graia.scheduler.service import SchedulerService
 from graiax.playwright.service import PlaywrightService
 from launart import Launart
+from loguru import logger
+from yarl import URL
 
 from utils.logger_patcher import patch as patch_logger
 
@@ -48,6 +51,7 @@ with saya.module_context():
 kayaku.bootstrap()
 
 config = kayaku.create(BasicConfig)
+kayaku.save_all()
 
 # Avilla 默认添加 MemcacheService
 launart.add_component(SchedulerService(it(GraiaScheduler)))
@@ -64,6 +68,10 @@ launart.add_component(AlconnaGraiaService(AlconnaAvillaAdapter, enable_cache=Fal
 
 avilla = Avilla(broadcast=bcc, launch_manager=launart, record_send=config.log_chat)
 
+if not config.protocol.QQAPI.enabled and not config.protocol.OneBot11.enable:
+    logger.error("No protocol enabled, please check your configuration.")
+    sys.exit()
+
 if config.protocol.QQAPI.enabled:
     avilla.apply_protocols(
         QQAPIProtocol().configure(
@@ -77,9 +85,10 @@ if config.protocol.QQAPI.enabled:
             )
         )
     )
+if config.protocol.OneBot11.enable:
     avilla.apply_protocols(
         OneBot11Protocol().configure(
-            OneBot11ForwardConfig(config.protocol.OneBot11.forward_url, config.protocol.OneBot11.forward_token)
+            OneBot11ForwardConfig(URL(config.protocol.OneBot11.forward_url), config.protocol.OneBot11.forward_token)
         )
     )
 
