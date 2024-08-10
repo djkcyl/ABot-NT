@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Literal
 
+from avilla.core import MessageChain
 from beanie import Document
 from pydantic import Field
 from pymongo import IndexModel
@@ -8,6 +9,18 @@ from pymongo import IndexModel
 from models.tcm.ims import IMSResponseModel
 from models.tcm.tms import TMSResponseModel
 from utils.datetime import CHINA_TZ
+
+
+class ChatLog(Document):
+    qid: str
+    group_id: str | None
+    message_id: str
+    message_display: str
+    time: datetime = Field(default_factory=datetime.now, tzinfo=CHINA_TZ)
+
+    class Settings:
+        name = "core_log_chat"
+        indexes = [IndexModel("qid")]
 
 
 class SignLog(Document):

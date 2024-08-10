@@ -23,7 +23,7 @@ class ABotDispatcher(BaseDispatcher):
                 last_userid = await AUser.find_one(sort=[("_id", -1)])
                 user_id = int(last_userid.aid) + 1 if last_userid else 1
                 await AUser(aid=user_id, cid=cid).insert()  # type: ignore[call-arg]
-                logger.info(f"[Core.db] 已初始化用户: {cid}")
+                logger.info(f"[Core.db] 已初始化用户: [{user_id}] {cid}")
             user = await AUser.find_one(AUser.cid == cid)
             if not user:
                 msg = f"未找到用户: {cid}"

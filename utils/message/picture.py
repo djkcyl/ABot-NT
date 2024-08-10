@@ -13,8 +13,10 @@ class SelfPicture:
         self.s3file = Launart.current().get_component(S3FileService).s3file
 
     async def from_name(self, name: str) -> Picture:
-        url = await self.s3file.get_presigned_url(name)
-        return Picture(UrlResource(url))
+        pic = await self.s3file.get_object(name)
+        return Picture(RawResource(await pic.read()))
+        # url = await self.s3file.get_presigned_url(name)
+        # return Picture(UrlResource(url))
 
     async def from_data(self, data: bytes | BytesIO, image_format: str | None = None) -> Picture:
         if isinstance(data, BytesIO):
