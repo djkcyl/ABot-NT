@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Any
 
 from beanie import Document
 from pydantic import Field
@@ -7,6 +8,8 @@ from pymongo import IndexModel
 from utils.datetime import CHINA_TZ
 
 from .log import BanLog, CoinLog, SignLog
+
+DefaultData = Any
 
 
 class AUser(Document):
@@ -23,6 +26,7 @@ class AUser(Document):
     exp: int = 0
     banned: bool = False
     join_time: datetime = Field(default_factory=datetime.now, tzinfo=CHINA_TZ)
+    func_data: dict = {}
 
     class Settings:
         name = "core_user"
@@ -170,7 +174,7 @@ class AUser(Document):
             )
             return now_coin
         self.coin -= num
-        await self.save()  # type: ignore
+        await self.save()
         await CoinLog.insert(
             CoinLog(
                 qid=self.cid,
@@ -185,8 +189,26 @@ class AUser(Document):
     async def add_talk(self) -> None:
         self.totle_talk += 1
         self.is_chat = True
-        await self.save()  # type: ignore
+        await self.save()
 
     async def set_nickname(self, nickname: str | None) -> None:
         self.nickname = nickname
-        await self.save()  # type: ignore
+        await self.save()
+
+    async def get_data(self, key: str, default: DefaultData = None) -> DefaultData:
+        key_list = key.split(".")
+        data = self.func_data
+        for k in key_list:
+            if data is None:
+                return default
+            data = data.get(k)
+
+    async def set_data(self, key: str, value: DefaultData) -> None:
+        key_list = key.split(".")
+        data = self.func_data
+        for k in key_list[:-1]:
+            if k not in data:
+                data[k] = {}
+            data = data[k]
+        data[key_list[-1]] = value
+        await self.save()

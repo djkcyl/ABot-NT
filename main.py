@@ -73,6 +73,8 @@ if not config.protocol.QQAPI.enabled and not config.protocol.OneBot11.enable:
     sys.exit()
 
 if config.protocol.QQAPI.enabled:
+    logger.error("QQAPI is not supported now.")
+    raise NotImplementedError
     avilla.apply_protocols(
         QQAPIProtocol().configure(
             QQAPIConfig(
@@ -93,7 +95,7 @@ if config.protocol.OneBot11.enable:
     )
 
 # 用这种方法重定向 logging 的 Logger 到 loguru 会丢失部分日志 (未解决)
-patch_logger(loop, level="DEBUG" if config.debug else "INFO")
+# patch_logger(loop, level="DEBUG" if config.debug else "INFO")
 del config
 bcc.prelude_dispatchers.append(ABotDispatcher)
 avilla.launch()

@@ -136,6 +136,13 @@ async def add_footer(
                 </div>
                 <section class="ad">{ad_html}</section>
             </section>
+
+        </footer>
+        <section class="powered">Powered by Avilla</section>
+    </div>
+    """
+
+"""
             <section class="right">
                 <div class="qrcode-area">
                     <img class="qrcode" src="data:image/png;base64,{group_b64}" />
@@ -145,11 +152,7 @@ async def add_footer(
                     <p>扫描二维码将 ABot 添加至你的群聊/频道</p>
                 </div>
             </section>
-        </footer>
-        <section class="powered">Powered by Avilla</section>
-    </div>
-    """
-
+"""
 
 async def create_image(text: str, cut: int = 64) -> bytes:
     str_hash = hashlib.sha256(text.encode("utf-8")).hexdigest()

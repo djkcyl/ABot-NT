@@ -38,7 +38,7 @@ async def main(ctx: Context, auser: AUser):  # noqa: ANN201
                 f"- 签到天数：{auser.total_sign}\n"
                 f"- 签到连续天数：{auser.continue_sign}\n"
                 f"- 游戏币：{auser.coin}\n"
-                f"- 从有记录以来共 At ABot {auser.totle_talk} 次\n",
+                f"- 从有记录以来共有发言 {auser.totle_talk} 次\n",
                 width=600,
             )
         ),

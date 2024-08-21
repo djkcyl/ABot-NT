@@ -16,6 +16,8 @@ class ABotDispatcher(BaseDispatcher):
     async def catch(
         interface: DispatcherInterface[MessageReceived],
     ) -> AUser | GroupData | S3File | ClientSession | Memcache | None:
+        if not isinstance(interface.event, MessageReceived):
+            return None
         ctx = interface.event.context
         if interface.annotation == AUser:
             cid = ctx.client.last_value

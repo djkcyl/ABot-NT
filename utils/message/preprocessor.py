@@ -18,7 +18,7 @@ class MentionMe(ChainDecorator):
             return chain
         ctx = interface.event.context
         first: Element = chain[0]
-        if isinstance(first, Notice) and first.target.last_value == ctx.self.last_value:
+        if isinstance(first, Notice) and (first.target.last_value in (ctx.self.last_value, "2854214511")):
             chain = MessageChain(chain.content[1:])
         if chain.has(Text):
             return chain.strip(" ").removeprefix("/").strip(" ")

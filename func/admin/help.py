@@ -57,8 +57,10 @@ async def main_menu(  # noqa: ANN201
         # 查找指定功能
         func, meta = await find_function(func_list, func_want)
 
+        if not func:
+            return None
         # 如果该功能已被关闭或正在维护，则返回提示信息
-        if not func or not meta or func in group_data.disable_functions or meta.maintain:
+        if not meta or func in group_data.disable_functions or meta.maintain:
             return await ctx.scene.send_message("该功能已被本群管理员关闭或正在维护")
 
         # 构建帮助信息字符串

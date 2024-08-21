@@ -48,7 +48,7 @@ channel.meta = build_metadata(
     description="字面意思，就是漂流瓶",
     cmd_prefix="bottle",
     usage=[
-        "发送指令：bottle drop <内容> [-a | --anonymous <是否匿名>] [-r | --remaining <次数>]",
+        "发送指令：bottle drop <内容> [-a, --anonymous <是否匿名>] [-r, --remaining <次数>]",
         "发送指令：bottle get",
         "发送指令：bottle check ?<id>",
         "发送指令：bottle delete <id>",

@@ -43,6 +43,11 @@ async def main(message: Message, auser: AUser, group_data: GroupData, s3f: S3Fil
             return
         # TODO: 更改获取图片信息的方式
         image_url = element.resource.url
+        # if hasattr(element.resource, "file"):  # NapCat 的图片后缀名有问题，不能用
+        #     image_name = element.resource.file
+        #     if await s3f.object_exists(image_name):
+        #         logger.warning(f"[Func.chat_log] 文件 {image_name} 已存在，跳过")
+        #         continue
 
         try:
             for _ in range(3):
